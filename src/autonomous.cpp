@@ -1,0 +1,417 @@
+#include "lemlib/chassis/chassis.hpp"
+#include "main.h"
+#include "pros/rtos.hpp"
+
+//ASSET(testblueright_txt);
+
+
+int delayTask = 190;
+int delayIntake = 200;
+
+void colorSort(){
+    while(true){
+        if(optical.get_proximity() > 150){
+            if(isBlue){ // blue alliance
+                if(optical.get_hue() < 50){  
+                    // delay a time
+                    pros::Task::delay(delayTask);
+
+                    // intake reverse
+                    toggleIntake(true,-1);
+
+                    // intake fwd again
+                    pros::Task::delay(delayIntake);
+                    toggleIntake(true,1);
+                    
+                }
+            }else{ // red alliance
+                if(optical.get_hue() > 150){
+                    // delay a time
+                    pros::Task::delay(delayTask);
+
+                    // intake reverse
+                    toggleIntake(true,-1);
+
+                    // intake fwd again
+                    pros::Task::delay(delayIntake);
+                    toggleIntake(true,1);
+                }
+            }
+            pros::Task::delay(100);
+        }
+    }
+}
+
+//int goalDeg = 300; // 215
+double previousErr = 0;
+void autoArmControl(){
+	double kP = 1;
+	double kD = 0;
+	double currentDegree;
+	int power;
+	while(true){
+		if(armGoalPosition){ // goal = up
+			currentDegree = arm_rotation.get_position()/100.0;
+			power = int((300-currentDegree)*kP + (previousErr - currentDegree)*kD);
+			//power = int((goalDeg-arm.get_position())*kP + (previousError - arm.get_position())*kD);
+			previousErr = 300-arm.get_position();
+			if(power > 127) power = 127;
+			if(power < -127) power = -127;
+			arm.move(power);
+		}else{ // goal = down
+			currentDegree = arm_rotation.get_position()/100.0;
+			power = int((-currentDegree)*kP);
+			//power = int(-10-arm.get_position()*kP);
+			if(power > 127) power = 127;
+			if(power < -127) power = -127;
+			arm.move(power);
+		}
+		/*else{
+			arm.move(0);
+		}*/
+		pros::Task::delay(15);
+	}
+}
+
+
+void blueRight(){ // 4 ring; working PLEASE RETEST BORDER 12.5???
+    isBlue = true;
+    chassis.setPose(56.5,24,90);
+
+    chassis.moveToPose(28, 24, 90, 4000, {.forwards = false, .minSpeed = 60, .earlyExitRange = 2}, false);
+
+    //chassis.moveToPoint(28, 24, 4000, {.forwards = false, .minSpeed = 70, .earlyExitRange = 2}, false);
+
+    /*chassis.waitUntilDone();
+    pros::delay(500);
+    grabber.set_value(true);*/
+    
+    // under ladder
+    chassis.moveToPose(16.5, 13, 0, 4000, {.forwards = false, .maxSpeed = 70 , .minSpeed = 30}, false);
+
+    grabber.set_value(true);
+
+    pros::delay(1000);
+
+    toggleIntake(true, 1);
+    pros::Task colorSortTask(colorSort, "Color Sort");
+
+    //border
+    chassis.moveToPose(11, 44, 0, 4000, {.maxSpeed = 70, .minSpeed = 40,. earlyExitRange = 4}, true); 
+    chassis.waitUntilDone();
+
+    pros::delay(1000);
+
+    chassis.moveToPose(11, 55, 0, 4000, {.maxSpeed = 70, .minSpeed = 40, /*.earlyExitRange = 4*/}, true);
+    chassis.waitUntilDone();
+    pros::delay(500);
+
+    // back
+    chassis.moveToPose(18, 23, 0, 4000, {.forwards = false, .minSpeed = 60, .earlyExitRange = 3}, false);
+
+    chassis.moveToPose(24, 46, 0, 4000, {.minSpeed = 50}, false);
+
+    pros::delay(1000);
+    // can add alliance stacked ring OR corner ring(s) here
+
+
+    // -> ladder touch
+    chassis.turnToHeading(180, 1500, {.earlyExitRange = 5}, false);
+
+    chassis.moveToPoint(24, 6, 4000, {.maxSpeed = 60, .minSpeed = 30, .earlyExitRange = 12}, false);
+    chassis.moveToPoint(24, 6, 4000, {.maxSpeed = 40, .minSpeed = 10}, false);
+
+    toggleIntake(false,0);
+    colorSortTask.remove();
+}
+
+void blueLeftGoalRush(){ // unfinished goal rush
+    isBlue = true;
+
+    chassis.setPose(52,-37,270);
+
+    //chassis.moveToPose(24, -38, 270, 4000, {.minSpeed = 60, .earlyExitRange = 3}, false);
+    //chassis.moveToPose(18, -40, 270, 4000, {.minSpeed = 50}, false);
+    chassis.moveToPoint(24, -38, 4000, {.minSpeed = 60, .earlyExitRange = 5}, false);
+    chassis.moveToPoint(16, -40, 4000, {}, false);
+
+    chassis.waitUntilDone();
+
+    
+    // deploy doinker
+    toggleDoinker(true);
+
+    pros::delay(1000);
+    //chassis.moveToPose(36, -35, 285, 4000, {.forwards = false, .minSpeed = 90, .earlyExitRange = 2}, false);
+    chassis.moveToPoint(24,-35, 4000, {.forwards = false, .minSpeed = 90, .earlyExitRange = 2}, false);
+
+    // undeploy doinker 
+    toggleDoinker(false);
+    pros::delay(1000);
+    
+    chassis.turnToHeading(135, 3000, {.maxSpeed = 70, .earlyExitRange = 5}, false);
+
+    pros::delay(200);
+    // goal 1
+    //chassis.moveToPose(24, -24, 135, 4000, {.forwards = false, .minSpeed = 40}, false);
+    chassis.moveToPoint(24, -24, 4000, {.forwards = false, .minSpeed = 40}, false);
+
+    grabber.set_value(true);
+
+    toggleIntake(true,1);
+    pros::Task colorSortTask(colorSort, "Color Sort");
+
+    chassis.moveToPoint(26,-46, 4000, {.maxSpeed = 70, .minSpeed = 40}, false);
+
+
+    //chassis.moveToPoint(24,-49, 4000, {.minSpeed = 50, .earlyExitRange = 2}, false);
+    //chassis.moveToPoint(24,-38, 4000, {.forwards = false, .minSpeed = 50, .earlyExitRange = 2}, false);
+    chassis.moveToPose(24, -38, 180, 4000, {.forwards = false, .minSpeed = 50, .earlyExitRange = 2}, false);
+
+    pros::delay(700);
+    toggleIntake(false,0);
+    grabber.set_value(false);    
+
+    chassis.swingToHeading(90, lemlib::DriveSide::LEFT, 4000, {.minSpeed = 30, .earlyExitRange = 5}, false);
+
+    // goal 2
+    //chassis.moveToPose(15, -45, 70, 4000, {.forwards = false, .minSpeed = 40}, false);
+    chassis.moveToPoint(16, -42, 4000, {.forwards = false, .minSpeed = 40}, false);
+
+    grabber.set_value(true);
+
+    toggleIntake(true,1);
+
+    chassis.moveToPoint(48, -30+12, 4000, {.minSpeed = 40, .earlyExitRange = 5}, false);
+
+    chassis.turnToHeading(315, 4000, {.minSpeed = 20, .earlyExitRange = 5}, false);
+
+    chassis.moveToPose(24, -6, 0, 4000, {.maxSpeed = 50, .minSpeed = 30, .earlyExitRange = 12}, false);
+    chassis.moveToPose(24, -6, 0, 4000, {.maxSpeed = 20, .minSpeed = 10}, false);
+    
+    colorSortTask.remove();
+    toggleIntake(false,0);
+}
+
+void blueLeftRing(){ // middle ring path
+    isBlue = true;
+    
+    chassis.setPose(56.5,-24,90);
+
+    chassis.moveToPoint(48, -24, 4000, {.forwards = false, .minSpeed = 70, .earlyExitRange = 5}, false);
+
+    toggleArm(true);
+
+    toggleIntake(true,1);
+
+    chassis.moveToPose(68, -6, 70, 4000, {.maxSpeed = 70, .minSpeed = 30}, false);
+
+    toggleArm(false);
+
+    pros::delay(500);
+
+    //chassis.moveToPose(28, -24, 90, 4000, {.forwards = false, .minSpeed = 70, .earlyExitRange = 2}, false);
+    chassis.moveToPose(24, -24, 90, 4000, {.forwards = false, .minSpeed = 50}, false);
+
+    chassis.waitUntilDone();
+    pros::delay(500);
+    grabber.set_value(true);
+
+    toggleIntake(false, 0);
+
+    chassis.turnToHeading(325, 1200, {.earlyExitRange = 10}, false);
+
+    
+    chassis.moveToPose(14, -10.5, 325, 4000, {.minSpeed = 40}, false);
+   
+    chassis.waitUntilDone();
+    pros::delay(200);
+    toggleDoinker(true);
+    
+
+    pros::delay(500);
+
+    chassis.moveToPoint(28,-20, 4000, {.forwards = false, .maxSpeed = 50, .minSpeed = 30, .earlyExitRange = 5}, false);
+
+    chassis.moveToPoint(34, -20, 4000, {.forwards = false, .maxSpeed = 60, .minSpeed = 30, .earlyExitRange = 5}, false);
+
+    chassis.turnToHeading(270, 1500, {.maxSpeed = 15, .earlyExitRange = 10}, false);
+    toggleIntake(true,1);
+    chassis.moveToPoint(38,-20, 4000, {.forwards = false, .minSpeed = 60}, false);
+   
+
+    chassis.waitUntilDone();
+
+    toggleDoinker(false);
+    pros::delay(700);
+
+    toggleIntake(true,1);
+    pros::Task colorSortTask(colorSort, "Color Sort");
+
+    chassis.moveToPose(27,-28, 200, 4000, {.minSpeed = 40, .earlyExitRange = 3}, true);
+    chassis.waitUntilDone();
+
+    chassis.moveToPoint(28, -44, 4000, {.maxSpeed = 70, .minSpeed = 40}, true);
+    chassis.waitUntilDone();
+
+    pros::delay(1000);
+
+    chassis.turnToHeading(0, 1000, {.earlyExitRange = 10}, true);
+    chassis.waitUntilDone();
+
+    pros::delay(200);
+
+    chassis.moveToPoint(28,-5, 4000, {.maxSpeed = 60, .earlyExitRange = 12}, true);
+    chassis.waitUntilDone();
+    chassis.moveToPoint(27,-5, 2000, {.maxSpeed = 20, .minSpeed = 10}, true);
+    chassis.waitUntilDone();
+
+    toggleIntake(false,0);
+    colorSortTask.remove();
+}
+
+void redRightRing(){ // middle ring path
+    isBlue = false;
+    
+    chassis.setPose(-56.5,-24,270);
+
+
+    chassis.moveToPoint(-48, -24, 4000, {.forwards = false, .minSpeed = 70, .earlyExitRange = 5}, false);
+
+    toggleArm(true);
+
+    toggleIntake(true,1);
+
+    chassis.moveToPose(-68, -6, 290, 4000, {.maxSpeed = 70, .minSpeed = 30}, false);
+
+    toggleArm(false);
+
+    pros::delay(500);
+
+
+    chassis.moveToPose(-24, -24, 270, 4000, {.forwards = false, .minSpeed = 50}, false);
+    
+    chassis.waitUntilDone();
+    pros::delay(500);
+    grabber.set_value(true);
+
+    toggleIntake(false,0);
+
+    //chassis.swingToHeading(45, lemlib::DriveSide::LEFT, 4000);
+    chassis.turnToHeading(30, 3000, {.maxSpeed = 70, .earlyExitRange = 5}, false);
+
+    //chassis.moveToPose(-11.75, -9.275, 45, 4000, {.minSpeed = 40}, false);
+    chassis.moveToPose(-10, -8, 60, 4000, {.minSpeed = 40}, false);
+
+    toggleDoinker(true);
+
+    pros::delay(300);
+
+    chassis.moveToPoint(-28,-20, 4000, {.forwards = false, .maxSpeed = 60, .minSpeed = 30, .earlyExitRange = 5}, false);
+
+    chassis.moveToPoint(-34, -20, 4000, {.forwards = false, .maxSpeed = 60, .minSpeed = 30, .earlyExitRange = 5}, false);
+
+    //chassis.turnToHeading(90, 1500, {.maxSpeed = 15, .earlyExitRange = 5}, false);
+    chassis.moveToPoint(-40,-20, 4000, {.forwards = false, .minSpeed = 60}, false);
+    //chassis.moveToPose(-40, -40, 170, 4000, {.forwards = false, .minSpeed = 60}, false);
+    chassis.turnToHeading(160, 1500, {.maxSpeed = 30, .minSpeed = 30, .earlyExitRange = 5}, false);
+
+    toggleDoinker(false);
+    toggleIntake(true,1);
+    pros::delay(600);  
+    
+    chassis.turnToHeading(145, 1500, {.maxSpeed = 30, .minSpeed = 30, .earlyExitRange = 5}, false);
+
+    
+    pros::Task colorSortTask(colorSort, "Color Sort");
+
+    chassis.moveToPoint(-24,-44, 4000, {.maxSpeed = 55, .minSpeed = 40}, true);
+    chassis.waitUntilDone();
+
+    chassis.turnToPoint(-24,0, 4000, {.maxSpeed = 70, .minSpeed = 30, .earlyExitRange = 10}, true);
+
+    chassis.moveToPoint(-24,-6, 4000, {.maxSpeed = 60, .earlyExitRange = 7}, false);
+    chassis.moveToPoint(-24,-4, 2000, {.maxSpeed = 30, .minSpeed = 20}, false);
+
+    toggleIntake(false,0);
+    colorSortTask.remove();
+}
+
+void redLeft(){ // 4 rings; working
+    isBlue = false;
+
+    chassis.setPose(-56.5,24,270);
+
+    chassis.moveToPose(-28, 24, 270, 4000, {.forwards = false, .minSpeed = 60, .earlyExitRange = 2}, false);
+
+    // ladder
+    chassis.moveToPose(-16.5, 13, 0, 4000, {.forwards = false, .maxSpeed = 70 , .minSpeed = 40}, false);
+
+    grabber.set_value(true);
+
+    pros::delay(1000);
+
+    toggleIntake(true, 1);
+    pros::Task colorSortTask(colorSort, "Color Sort");
+
+    //border
+    chassis.moveToPose(-12.5, 44, 0, 4000, {.maxSpeed = 70, .minSpeed = 40,. earlyExitRange = 4}, true); 
+    chassis.waitUntilDone();
+
+    pros::delay(1000);
+
+    chassis.moveToPose(-12.5, 53, 0, 4000, {.maxSpeed = 70, .minSpeed = 40, /*.earlyExitRange = 4*/}, true);
+    //chassis.moveToPoint(-12,50, 4000, {.maxSpeed = 70, .minSpeed = 40, /*.earlyExitRange = 4*/}, true);
+    chassis.waitUntilDone();
+    pros::delay(500);
+
+    // back
+    chassis.moveToPose(-18, 23, 0, 4000, {.forwards = false, .minSpeed = 60, .earlyExitRange = 3}, false);
+
+    chassis.moveToPose(-24, 46, 0, 4000, {.minSpeed = 50}, false);
+
+    pros::delay(1000);
+    // can add alliance stacked ring OR corner ring(s) here
+
+
+    // -> ladder touch
+    chassis.turnToHeading(180, 1500, {.earlyExitRange = 5}, false);
+
+    chassis.moveToPoint(-24, 6, 4000, {.maxSpeed = 60, .minSpeed = 30, .earlyExitRange = 12}, false);
+    chassis.moveToPoint(-24, 7, 4000, {.maxSpeed = 20, .minSpeed = 10}, false);
+
+    toggleIntake(false,0);
+    colorSortTask.remove();
+}
+
+void autonomous() {
+    pros::Task armControlTask(autoArmControl, "Arm Control");
+    //blueRight();
+    //redLeft();
+    //blueLeftGoalRush(); // not done
+    
+    blueLeftRing();
+    //redRightRing();
+
+    //redLeft();
+
+    armControlTask.remove();
+
+
+    //pros::Task blueRightAuton(blueRight, "Blue Right Auto");
+
+    //skills();
+    
+    //redLeftAWP(); // switch autos
+    //redLeftAB();
+
+    //redRightAWP();
+    //redRightAB(); // **********************************
+    
+    //blueRightAWP(); // switch autos
+    //blueRightAB();
+
+    //blueLeftAWP();
+    //blueLeftAB(); // ***********************************
+}
+
