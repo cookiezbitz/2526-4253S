@@ -19,15 +19,6 @@ void setGrabber(){
     }
 }
 
-/*
-        if(doinkerDown){ // extended
-            doinker.set_value(false);
-            doinkerDown = !doinkerDown;
-        }else{ // retracted
-            doinker.set_value(true);
-            doinkerDown = !doinkerDown;
-        }
-*/
 void toggleGrabber(bool status){
     grabber.set_value(status);
 }
