@@ -30,7 +30,7 @@ extern pros::Motor intakeUpper;
 
 extern pros::MotorGroup driveLeft;
 extern pros::MotorGroup driveRight;
-extern pros::MotorGroup intake;
+//extern pros::MotorGroup intake;
 extern pros::Motor arm;
 
 extern pros::adi::DigitalOut grabber;

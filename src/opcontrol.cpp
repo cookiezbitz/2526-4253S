@@ -46,36 +46,6 @@ void driverColorSort(){
     }
 }
 
-int goalDegree = 300; // 215
-double previousError = 0;
-void armControl(){
-	double kP = 1;
-	double kD = 0;
-	double currentDegree;
-	int power;
-	while(true){
-		if(armGoalPosition){ // goal = up
-			currentDegree = arm_rotation.get_position()/100.0;
-			power = int((goalDegree-currentDegree)*kP + (previousError - currentDegree)*kD);
-			//power = int((goalDegree-arm.get_position())*kP + (previousError - arm.get_position())*kD);
-			previousError = goalDegree-arm.get_position();
-			if(power > 127) power = 127;
-			if(power < -127) power = -127;
-			arm.move(power);
-		}else{ // goal = down
-			currentDegree = arm_rotation.get_position()/100.0;
-			power = int((-20-currentDegree)*kP);
-			//power = int(-10-arm.get_position()*kP);
-			if(power > 127) power = 127;
-			if(power < -127) power = -127;
-			arm.move(power);
-		}
-		/*else{
-			arm.move(0);
-		}*/
-		pros::Task::delay(15);
-	}
-}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -91,36 +61,15 @@ void armControl(){
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	isBlue = true;
-	pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
-	pros::Task armControlTask(armControl, "Arm Control");
-	armGoalPosition = false;
+	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
 	while (true) {
 		// loop for taking in driver controls
-		setDrive();
+
+		//setDrive();
 		setIntake();
-		setGrabber();
-		setArm();
+		//setGrabber();
+		//setArm();
 
-		pros::lcd::set_text(1, std::to_string(optical.get_hue()));
-		//pros::lcd::set_text(4, std::to_string(optical.get_proximity()));
-
-		pros::lcd::set_text(4, std::to_string(arm.get_position()));
-
-		/*pros::lcd::set_text(1,std::to_string(driveLeftTop.get_position()));
-		pros::lcd::set_text(2,std::to_string(driveLeftBot.get_position()));
-		pros::lcd::set_text(3,std::to_string(driveLeftBack.get_position()));
-		pros::lcd::set_text(4,std::to_string(driveRightTop.get_position()));
-		pros::lcd::set_text(5,std::to_string(driveRightBot.get_position()));
-		pros::lcd::set_text(6,std::to_string(driveRightBack.get_position()));*/
-		
-	
-		//pros::lcd::set_text(3, "heading" + std::to_string(inertial.get_heading()));
-		//pros::lcd::set_text(3,std::to_string(rotation.get_position()/100));
-		//pros::lcd::set_text(4,std::to_string(xPod.get_position()/100));
-		//pros::lcd::set_text(5,std::to_string(arm.get_position()));
-		//pros::lcd::set_text(1,std::to_string(inertial.get_rotation()));
-		//pros::lcd::set_text(2,std::to_string(getAverageEncoderVal()));
 		pros::delay(15);
 	}
 }

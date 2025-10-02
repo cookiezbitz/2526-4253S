@@ -4,35 +4,39 @@
 
 bool intakeOn = false;
 bool intakeReversed = false;
-int power = 100;
-double multiplier = 1;
+int power = 127;
+
 
 
 
 void setIntake(){
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)&&controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-        pros::lcd::set_text(8, "both pressed");
+        
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
-        intake.move(int(power*multiplier));
+        intakeUpper.move(int(power));
+        intakeLower.move(int(power));
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-        intake.move(int(-1*power*multiplier));
+        intakeUpper.move(int(-1*power));
+        intakeLower.move(int(-1*power));
     }else{
-        intake.brake();
+        intakeUpper.brake();
+        intakeLower.brake();
     }
 
 }
 
 void toggleIntake(bool status, double direction){
     if(status){
-        intake.move(int(power*direction));
+        intakeUpper.move(int(power*direction));
+        intakeLower.move(int(power*direction));
     }else{
-        intake.brake();
+        intakeUpper.brake();
+        intakeLower.brake();
     }
 }
 
-void toggleWeak(int direction){
-    intake.move(127/3*direction);
-}
+
+// should remeasure these vals:
 
 // proximity > 150 or 200 = in front of sensor; max 255
 // HUE:

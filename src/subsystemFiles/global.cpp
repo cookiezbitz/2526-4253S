@@ -13,23 +13,23 @@ bool armGoalPosition;
 int intakeTimer = 0;
 bool intakeSlowed = false;
 
-// motor ports + radio port 21
+// motor ports + radio port ___
 pros::Motor driveLeftBack(-11, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor driveLeftBot(-3, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor driveLeftTop(16, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 
 pros::Motor driveRightBack(9, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor driveRightBot(8, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor driveRightTop(-4, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
+pros::Motor driveRightTop(-4, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees); 
 
-//pros::Motor intakeLower(-11, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
-//pros::Motor intakeUpper(4,pros::MotorGearset::green,pros::MotorEncoderUnits::degrees);
-
-//pros::Motor arm(-4, pros::MotorGearset::red, pros::MotorEncoderUnits::degrees);
+pros::Motor intakeLower(1, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
+pros::Motor intakeUpper(-2,pros::MotorGearset::green,pros::MotorEncoderUnits::degrees);
 
 pros::MotorGroup driveLeft({-11,-3,16}, pros::MotorGearset::blue); 
 pros::MotorGroup driveRight({9,8,-4}, pros::MotorGearset::blue); 
-pros::MotorGroup intake({17 /*upper intake*/,-2 /*lower intake reversed*/});
+//pros::MotorGroup intake({17 ,-2});
+
+
 pros::Motor arm(-6, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 
 pros::adi::DigitalOut grabber('A');
@@ -46,7 +46,7 @@ pros::Rotation xPod(16); // horiz tracking
 
 lemlib::TrackingWheel horizontalEncoder(&xPod, lemlib::Omniwheel::NEW_2,-4);
 
-lemlib::OdomSensors sensors(nullptr,nullptr,/*&horizontalEncoder*/ nullptr,nullptr, &inertial);
+lemlib::OdomSensors sensors(nullptr,nullptr,&horizontalEncoder,nullptr, &inertial);
 
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(4.8, // proportional gain (kP)
@@ -85,6 +85,8 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
     angular_controller, // angular PID settings
     sensors // odometry sensors
 );
+
+
 
 // controller is declared in header class
 pros::Controller controller(pros::E_CONTROLLER_MASTER); 
