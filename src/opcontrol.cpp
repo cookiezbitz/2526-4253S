@@ -1,5 +1,7 @@
 #include "main.h"
 #include "pros/rtos.hpp"
+#include "subsystemHeaders/global.hpp"
+
 
 int delaySort = 190;
 int delayForward = 200;
@@ -64,9 +66,39 @@ void opcontrol() {
 	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
 	while (true) {
 		// loop for taking in driver controls
+		// get joystick positions
+        int forward = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
 
+        chassis.arcade(-turn, -forward);
+       
+        /*
+        // R1: run first and second q 
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+            lowerIntake.move(127);
+            midIntake.move(127);
+            upperIntake.move(-70);   
+        }
+        
+        // R2: run ALL forward
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            lowerIntake.move(127);
+            midIntake.move(127);
+            upperIntake.move(127);
+        }
+
+        // L1: run ALL backward
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+            lowerIntake.move(-127);
+            midIntake.move(-127);
+            upperIntake.move(-127);
+        }
+
+		*/
+
+		
 		//setDrive();
-		setIntake();
+		//setIntake();
 		//setGrabber();
 		//setArm();
 

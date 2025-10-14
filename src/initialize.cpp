@@ -24,20 +24,13 @@ void initialize() {
 	driveLeft.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	driveRight.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	
-	intakeUpper.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	intakeLower.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	grabber.set_value(false);   
-	arm_1.set_value(false);
-	arm_2.set_value(false);
-	doinker.set_value(false);
-
-	arm.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	//arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	//arm.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
-
+	/*lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	midIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);*/
+	
+	
 	inertial.reset();
 	inertial.tare_heading();
-	resetDriveEncoders();
 
 	optical.set_led_pwm(50);
 	optical.set_integration_time(15);
@@ -60,13 +53,6 @@ void initialize() {
             /*pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading*/
-
-			pros::lcd::set_text(1,std::to_string(driveLeftTop.get_position()));
-		pros::lcd::set_text(2,std::to_string(driveLeftBot.get_position()));
-		pros::lcd::set_text(3,std::to_string(driveLeftBack.get_position()));
-		pros::lcd::set_text(4,std::to_string(driveRightTop.get_position()));
-		pros::lcd::set_text(5,std::to_string(driveRightBot.get_position()));
-		pros::lcd::set_text(6,std::to_string(driveRightBack.get_position()));
 
             // delay to save resources
             pros::delay(20);
