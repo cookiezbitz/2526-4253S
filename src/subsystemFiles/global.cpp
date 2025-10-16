@@ -14,18 +14,18 @@ int intakeTimer = 0;
 bool intakeSlowed = false;
 
 // motor ports + radio port ___
-pros::MotorGroup driveLeft({3, 4, 5}, pros::MotorGearset::blue); // left motor group - ports 3 (reversed), 4, 5 (reversed)
-pros::MotorGroup driveRight({7, 8, 9}, pros::MotorGearset::blue); // right motor group - ports 6, 7, 9 (reversed)
+pros::MotorGroup driveLeft({11, 14, 2}, pros::MotorGearset::blue); // left motor group (normal)
+pros::MotorGroup driveRight({-3, -1, -12}, pros::MotorGearset::blue); // right motor group (reversed)
 
-pros::Motor lowerIntake(1, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor midIntake(19, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
-pros::Motor upperIntake(11, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
+pros::Motor lowerIntake(13, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
+pros::Motor midIntake(10, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
+pros::Motor upperIntake(9, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 
 pros::adi::DigitalOut loaderPiston('A');
 
-// unedited
-pros::Imu inertial(19);
+pros::Imu inertial(4);
 
+// unedited
 pros::Optical optical(1);
 
 pros::Rotation arm_rotation(-14); 

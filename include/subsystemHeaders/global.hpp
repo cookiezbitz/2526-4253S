@@ -23,9 +23,9 @@ extern pros::Motor upperIntake;
 
 extern pros::adi::DigitalOut loaderPiston;
 
-//
 extern pros::Imu inertial;
 
+//
 extern pros::Optical optical;
 
 extern pros::Rotation arm_rotation;
