@@ -70,7 +70,7 @@ void opcontrol() {
 
 		setDrive();
 		setIntake();
-		//setGrabber();
+		setLoader();
 		//setArm();
 
 		pros::delay(15);

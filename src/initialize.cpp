@@ -24,11 +24,15 @@ void initialize() {
 	driveLeft.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	driveRight.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	
-	/*lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	midIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);*/
+	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	
-	
+	loaderPiston.set_value(false);
+
+	//
+
+
 	inertial.reset();
 	inertial.tare_heading();
 

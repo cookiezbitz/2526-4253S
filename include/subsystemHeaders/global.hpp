@@ -21,6 +21,9 @@ extern pros::Motor lowerIntake;
 extern pros::Motor midIntake;
 extern pros::Motor upperIntake;
 
+extern pros::adi::DigitalOut loaderPiston;
+
+//
 extern pros::Imu inertial;
 
 extern pros::Optical optical;

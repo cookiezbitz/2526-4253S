@@ -2,20 +2,20 @@
 #include "pros/misc.h"
 #include "subsystemHeaders/global.hpp"
 
-bool extended = true;
+bool loaderState = false;
 bool doinkerDown = false;
 
-void setGrabber(){
-    
+void setLoader(){
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+        loaderPiston.set_value(!loaderState);
+        loaderState = !loaderState;
+    }
 }
 
 void toggleGrabber(bool status){
     
 }
 
-void toggleDoinker(bool status){
-    //
-}
 
 void switchGrabber(){
     //

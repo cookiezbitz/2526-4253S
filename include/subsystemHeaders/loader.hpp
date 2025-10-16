@@ -2,10 +2,8 @@
 
 extern bool extended;
 
-void setGrabber();
+void setLoader();
 
 void toggleGrabber(bool status); //auton
-
-void toggleDoinker(bool status);
 
 void switchGrabber(); //auton

@@ -21,6 +21,8 @@ pros::Motor lowerIntake(1, pros::MotorGearset::blue, pros::MotorEncoderUnits::de
 pros::Motor midIntake(19, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 pros::Motor upperIntake(11, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 
+pros::adi::DigitalOut loaderPiston('A');
+
 // unedited
 pros::Imu inertial(19);
 
