@@ -75,7 +75,7 @@ void opcontrol(void);
 
 #include "subsystemHeaders/global.hpp"
 #include "subsystemHeaders/drivetrain.hpp"
-#include "subsystemHeaders/grabber.hpp"
+#include "subsystemHeaders/loader.hpp"
 #include "subsystemHeaders/intake.hpp"
 
 #include "lemlib-tarball/api.hpp"
