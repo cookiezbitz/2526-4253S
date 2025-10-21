@@ -6,7 +6,7 @@ bool loaderState = false;
 bool doinkerDown = false;
 
 void setLoader(){
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
         loaderPiston.set_value(!loaderState);
         loaderState = !loaderState;
     }

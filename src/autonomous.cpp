@@ -41,3 +41,37 @@ void colorSort(){
         }
     }
 }
+
+void redRight(){
+
+}
+
+void redLeft(){
+
+}
+
+void blueRight(){
+
+}
+
+void blueLeft(){
+
+}
+
+void basic(){
+    chassis.setPose(0,0,0);
+
+
+    toggleIntake(true,1);
+    chassis.moveToPoint(0,40,8000, {.maxSpeed = 80});
+
+   // STOP AFTER A TIME TO NOT BURN OUT THE MOTORS
+}
+
+void autonomous() {
+    //redRight();
+    //redLeft();
+    //blueRight();
+    //blueLeft();
+    basic();
+}

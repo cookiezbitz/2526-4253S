@@ -17,6 +17,13 @@ extern bool isBlue;
 extern pros::MotorGroup driveLeft;
 extern pros::MotorGroup driveRight;
 
+extern pros::Motor left1;
+extern pros::Motor left2;
+extern pros::Motor left3;
+extern pros::Motor right1;
+extern pros::Motor right2;
+extern pros::Motor right3;
+
 extern pros::Motor lowerIntake;
 extern pros::Motor midIntake;
 extern pros::Motor upperIntake;

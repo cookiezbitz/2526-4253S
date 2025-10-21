@@ -1,4 +1,7 @@
+#include "liblvgl/llemu.hpp"
 #include "main.h"
+#include "pros/motors.h"
+#include "subsystemHeaders/global.hpp"
 
 void on_center_button() {
 	static bool pressed = false;
@@ -24,9 +27,9 @@ void initialize() {
 	driveLeft.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	driveRight.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	
-	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	midIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	midIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	
 	loaderPiston.set_value(false);
 
@@ -57,6 +60,18 @@ void initialize() {
             /*pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading*/
+
+			pros::lcd::set_text(0, "Left: " + std::to_string(driveLeft.get_position()));
+			pros::lcd::set_text(1, "Right: " + std::to_string(driveRight.get_position()));
+
+			
+			/*pros::lcd::set_text(0, "Left1: "+ std::to_string(left1.get_position()));
+			pros::lcd::set_text(1, "Left2: "+ std::to_string(left2.get_position()));
+			pros::lcd::set_text(2, "Left3: "+ std::to_string(left3.get_position()));
+			pros::lcd::set_text(3, "Right1: "+ std::to_string(right1.get_position()));
+			pros::lcd::set_text(4, "Right2: "+ std::to_string(right2.get_position()));
+			pros::lcd::set_text(5, "Right3: "+ std::to_string(right3.get_position()));*/
+			
 
             // delay to save resources
             pros::delay(20);

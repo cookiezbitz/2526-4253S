@@ -8,7 +8,7 @@ int power = 127;
 
 void setIntake(){
     // R1: run first and second q 
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
         lowerIntake.move(127);
         midIntake.move(127);
         upperIntake.move(-70);
@@ -18,18 +18,26 @@ void setIntake(){
         midIntake.move(127);
         upperIntake.move(127);
     // L1: run ALL backward
-    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
         lowerIntake.move(-127);
         midIntake.move(-127);
         upperIntake.move(-127);
+    }else{
+        lowerIntake.brake();
+        midIntake.brake();
+        upperIntake.brake();
     }
 }
 
 void toggleIntake(bool status, double direction){
     if(status){
-        //
+        lowerIntake.move(127);
+        midIntake.move(127);
+        upperIntake.move(-70);
     }else{
-        //
+        lowerIntake.brake();
+        midIntake.brake();
+        upperIntake.brake();
     }
 }
 
