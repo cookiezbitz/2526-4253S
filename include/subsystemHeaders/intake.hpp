@@ -5,7 +5,7 @@ extern bool intakeReversed;
 
 void setIntake(); // button control
 
-void toggleIntake(bool status, double direction); //auton
+void toggleIntake(bool status, double state); //auton
 
 void toggleWeak(double direction);
 

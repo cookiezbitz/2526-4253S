@@ -58,6 +58,36 @@ void blueLeft(){
 
 }
 
+void leftAuton(){
+    chassis.setPose(62,-16.247,270);
+
+    // chassis.moveToPoint(45,-26,5000,{.minSpeed=60, .earlyExitRange=3},false);
+    chassis.moveToPoint(45,-26,5000,{.minSpeed=60, .earlyExitRange=3},false);
+
+
+    chassis.moveToPoint(36,-36,5000,{},false);
+    chassis.turnToPoint(0,0,1000,{.minSpeed=40,.earlyExitRange=10},false);
+
+    toggleIntake(true,0);
+    chassis.moveToPose(27,-27,315,3000,{.maxSpeed=60, .minSpeed=40, .earlyExitRange = 2.5},false);
+    toggleLoader(true);
+
+    chassis.moveToPose(16,-16,315,3000,{.maxSpeed=60, .minSpeed=50},false);
+
+    pros::delay(500);
+
+    chassis.moveToPoint(22,-22,5000,{.forwards = false, .maxSpeed=80,.minSpeed=50,.earlyExitRange=1},false);
+
+    chassis.turnToHeading(135,1000,{.minSpeed=40,.earlyExitRange=10},true);
+    pros::delay(500);
+    toggleLoader(false);
+
+    chassis.moveToPose(10,-10,135,3000,{.forwards=false, .maxSpeed=40, .minSpeed=40, .earlyExitRange = 1},false);
+    toggleIntake(true,1);
+
+
+}
+
 void basic(){
     chassis.setPose(0,0,0);
 
@@ -68,10 +98,20 @@ void basic(){
    // STOP AFTER A TIME TO NOT BURN OUT THE MOTORS
 }
 
+void pidtuning(){
+    chassis.setPose(0,0,0);
+
+    //chassis.moveToPoint(0,24,5000);
+    chassis.turnToHeading(90, 5000);
+
+}
+
 void autonomous() {
     //redRight();
     //redLeft();
     //blueRight();
     //blueLeft();
-    basic();
+    //basic();
+    //pidtuning();
+    leftAuton();
 }

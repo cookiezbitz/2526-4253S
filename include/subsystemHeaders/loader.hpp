@@ -4,6 +4,6 @@ extern bool extended;
 
 void setLoader();
 
-void toggleGrabber(bool status); //auton
+void toggleLoader(bool status); //auton
 
 void switchGrabber(); //auton

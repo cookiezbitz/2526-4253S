@@ -6,14 +6,14 @@ bool loaderState = false;
 bool doinkerDown = false;
 
 void setLoader(){
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
         loaderPiston.set_value(!loaderState);
         loaderState = !loaderState;
     }
 }
 
-void toggleGrabber(bool status){
-    
+void toggleLoader(bool status){
+    loaderPiston.set_value(status);
 }
 
 

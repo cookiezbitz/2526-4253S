@@ -29,11 +29,17 @@ void setIntake(){
     }
 }
 
-void toggleIntake(bool status, double direction){
+void toggleIntake(bool status, double state){
     if(status){
-        lowerIntake.move(127);
-        midIntake.move(127);
-        upperIntake.move(-70);
+        if(state==1){
+            lowerIntake.move(127);
+            midIntake.move(127);
+            upperIntake.move(127);
+        }else{
+            lowerIntake.move(127);
+            midIntake.move(127);
+            upperIntake.move(-70);
+        }
     }else{
         lowerIntake.brake();
         midIntake.brake();
