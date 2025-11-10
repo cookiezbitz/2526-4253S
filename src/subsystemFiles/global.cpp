@@ -70,7 +70,7 @@ lemlib::ControllerSettings angular_controller(1.4, // proportional gain (kP)
 
 lemlib::Drivetrain drivetrain(&driveLeft, // left motor group
     &driveRight, // right motor group
-    11.5, // track width  ; length = 10.5 in
+    11.5, // track width  ; 
     lemlib::Omniwheel::NEW_325,
     450, // drivetrain rpm
     2 // horizontal drift is 2 (for now)
