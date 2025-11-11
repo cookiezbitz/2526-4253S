@@ -35,6 +35,10 @@ void toggleIntake(bool status, double state){
             lowerIntake.move(127);
             midIntake.move(127);
             upperIntake.move(127);
+        }else if(state==-1){
+            lowerIntake.move(-70);
+            midIntake.move(-70);
+            upperIntake.move(-70);
         }else{
             lowerIntake.move(127);
             midIntake.move(127);
