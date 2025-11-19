@@ -9,7 +9,7 @@
 int delayTask = 190;
 int delayIntake = 200;
 
-void colorSort(){
+/*void colorSort(){
     while(true){
         if(optical.get_proximity() > 150){
             if(isBlue){ // blue alliance
@@ -42,6 +42,7 @@ void colorSort(){
         }
     }
 }
+*/
 
 void redRight(){
 
