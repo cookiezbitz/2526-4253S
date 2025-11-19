@@ -32,11 +32,14 @@ extern pros::adi::DigitalOut loaderPiston;
 
 extern pros::Imu inertial;
 
+extern pros::adi::Led led;
+extern pros::adi::Led led2;
+
 //
 extern pros::Optical optical;
 
 extern pros::Rotation arm_rotation;
-extern pros::Rotation xPod;
+extern pros::Rotation vertPod;
 
 extern lemlib::Chassis chassis;
 

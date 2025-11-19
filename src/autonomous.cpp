@@ -1,6 +1,7 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "main.h"
 #include "pros/rtos.hpp"
+#include <cmath>
 
 //ASSET(testblueright_txt);
 
@@ -165,6 +166,14 @@ void pidtuning(){
 
 }
 
+void skills(){
+    chassis.setPose(-62,-15,90);
+    chassis.moveToPose(-24,-23,110,5000);
+    toggleIntake(true,0);
+    chassis.moveToPose(-63,-48.779,270,5000);
+    chassis.moveToPose(-65,-48.877,270,5000);
+}
+
 void autonomous() {
     //redRight();
     //redLeft();
@@ -174,6 +183,141 @@ void autonomous() {
     //basic();
     
     //leftAuton();
-    altLeftAuton();
+    //altLeftAuton();
+    skills();
+}
 
+
+// pseudocode for odom/pp/boomerang
+
+double x_global = 0;
+double y_global = 0;
+double theta_global = 0;
+
+double prev_heading = 0;
+double prev_rotation = 0;
+
+void odom(){
+    while(true){
+        double current_heading = inertial.get_heading();
+        double delta_heading = current_heading - prev_heading;
+        prev_heading = current_heading; // save current heading as prev for next loop
+
+        double current_rotation = vertPod.get_position()/100.0;
+        double delta_rotation = current_rotation - prev_rotation;
+        prev_rotation = current_rotation; // save current rotation reading as prev for next loop
+
+        double distance_travelled = delta_rotation/360.0 * 2.0 * std::numbers::pi * 1.0; // 2 * pi * 1 inch radius
+
+        double radius = distance_travelled / delta_heading; // in inches
+
+        double dx_local = radius * (sin(delta_heading));
+        double dy_local = radius * (1 - cos(delta_heading));
+
+        double dx_global = dx_local * cos(theta_global) - dy_local * sin(theta_global);
+        double dy_global = dx_local * sin(theta_global) + dy_local * cos(theta_global);
+
+        // update global coordinates and heading
+        x_global += dx_global;
+        y_global += dy_global;
+        theta_global = inertial.get_heading();
+
+        pros::Task::delay(20); 
+    }
+}
+
+//HELPER FCT
+int drivePID(int goal_distance){
+    static double kP = 0.2;
+    static double kD = 2;
+
+    static double error = 0;
+    static double prevError = 0;
+
+    prevError = error;
+    error = goal_distance - getAverageEncoderVal();
+
+    double power = error*kP + (error - prevError)*kD;
+
+    if (power > 100) power = 100;
+
+    return power;
+}
+
+double track_width = 11.5;
+double time_elapsed = 0;
+void move_to_point(double goal_x, double goal_y, double timeout, double early_exit_range){
+    time_elapsed = 0; // reset time elapsed at start of movement
+
+    double total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // also equal to lookahead distance
+
+    double error_x = goal_x - x_global;
+    double error_y = goal_y - y_global;
+
+    double path_radius = (total_error * total_error) / (2 * error_x); // radius of the circular path to follow
+
+    double direct_power;
+    double left_power;
+    double right_power;
+
+    while(total_error >= early_exit_range || time_elapsed < timeout){
+        error_x = goal_x - x_global;
+        error_y = goal_y - y_global; 
+        total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // update errors
+
+        direct_power = drivePID(total_error); // [0, 100]
+
+        left_power = direct_power + (track_width * direct_power)/(2 * path_radius);
+        right_power = direct_power - (track_width * direct_power)/(2 * path_radius);
+        
+        driveLeft.move(left_power);
+        driveRight.move(right_power);
+
+        pros::Task::delay(15);
+        time_elapsed += 15;
+    }
+}
+
+void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_distance, double timeout, double early_exit_range){
+    time_elapsed = 0; // reset time elapsed at start of movement
+
+    double total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // also equal to lookahead distance
+
+    double error_x = goal_x - x_global;
+    double error_y = goal_y - y_global;
+
+    double carrot_x = goal_x - (total_error * lead_distance * sin(goal_theta)); // NEW
+    double carrot_y = goal_y - (total_error * lead_distance * cos(goal_theta)); // NEW
+
+    double carrot_error = sqrt((pow(carrot_x - x_global, 2) + pow(carrot_y - y_global, 2)));; // NEW
+
+    double path_radius = (carrot_error * carrot_error) / (2 * error_x); // radius of the circular path to follow
+
+    double direct_power;
+    double left_power;
+    double right_power;
+
+    while(total_error >= early_exit_range || time_elapsed < timeout){
+        error_x = goal_x - x_global;
+        error_y = goal_y - y_global; 
+        total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // TO GOAL POINT
+        
+        // update carrot point + errors
+        carrot_x = goal_x - (total_error * lead_distance * sin(goal_theta)); //
+        carrot_y = goal_y - (total_error * lead_distance * cos(goal_theta)); //
+
+        carrot_error = sqrt((pow(carrot_x - x_global, 2) + pow(carrot_y - y_global, 2))); // TO CARROT POINT
+
+
+        direct_power = drivePID(carrot_error); // [0, 100]  edited
+
+        left_power = direct_power + (track_width * direct_power)/(2 * path_radius);
+        right_power = direct_power - (track_width * direct_power)/(2 * path_radius);
+        
+        driveLeft.move(left_power);
+        driveRight.move(right_power);
+
+        pros::Task::delay(15);
+        time_elapsed += 15;
+    }
 }

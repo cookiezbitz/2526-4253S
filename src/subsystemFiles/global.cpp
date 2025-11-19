@@ -34,13 +34,19 @@ pros::adi::DigitalOut loaderPiston('A');
 
 pros::Imu inertial(4);
 
+pros::Rotation vertPod(16); // vert tracking
+
+//LED 
+pros::adi::Led led('A',17);
+pros::adi::Led led2('B',17);
+
 // unedited
 pros::Optical optical(1);
 
 pros::Rotation arm_rotation(-14); 
-pros::Rotation xPod(16); // horiz tracking
 
-lemlib::TrackingWheel horizontalEncoder(&xPod, lemlib::Omniwheel::NEW_2,-4);
+
+lemlib::TrackingWheel horizontalEncoder(&vertPod, lemlib::Omniwheel::NEW_2,-4);
 
 lemlib::OdomSensors sensors(nullptr,nullptr,&horizontalEncoder,nullptr, &inertial);
 

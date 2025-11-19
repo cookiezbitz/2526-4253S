@@ -49,6 +49,7 @@ void driverColorSort(){
 }
 
 
+
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -67,7 +68,10 @@ void opcontrol() {
 	while (true) {
 		// loop for taking in driver controls
 		// get joystick positions
-
+		led.set_all(0X0000FF); // blue = 0X0000FF red = 0XFF0000
+		led2.set_all(0X0000FF);
+		led.update();
+		led2.update();
 		setDrive();
 		setIntake();
 		setLoader();
