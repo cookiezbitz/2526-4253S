@@ -72,6 +72,11 @@ void opcontrol() {
 		led2.set_all(0X0000FF);
 		led.update();
 		led2.update();
+
+		pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+        pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+        pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+		
 		setDrive();
 		setIntake();
 		setLoader();

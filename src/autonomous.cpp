@@ -147,10 +147,26 @@ void altLeftAuton(){
     //chassis.moveToPoint(60,-48,3000,{.maxSpeed=60,.minSpeed=40},false);
 }
 
+void AWPright(){
+    chassis.setPose(0,0,0);
+
+    toggleIntake(true,0);
+    chassis.moveToPoint(6,38.5,2000, {.maxSpeed = 50});
+
+    chassis.turnToHeading(125,2000,{.maxSpeed=80});
+    //toggleIntake(false,0);
+
+    chassis.moveToPose(34,12,180,3000,{.maxSpeed=80,.minSpeed=40,.earlyExitRange=2});
+
+    chassis.moveToPoint(34,7,2000,{.maxSpeed=80});
+    chassis.moveToPoint(34,32,2000,{.forwards=false,.minSpeed=40});
+}
+
 void basic(){
     chassis.setPose(0,0,0);
 
-    chassis.moveToPoint(0,6,5000);
+    
+    chassis.moveToPoint(0,6,5000,{.maxSpeed = 60});
 
     //chassis.moveToPose(0,24,0,8000, {});
 
@@ -185,7 +201,8 @@ void autonomous() {
     
     //leftAuton();
     //altLeftAuton();
-    skills();
+    AWPright();
+    //skills();
 }
 
 

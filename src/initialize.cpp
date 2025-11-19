@@ -54,16 +54,22 @@ void initialize() {
 
 	pros::lcd::set_text(0, "4253S bot is READY! :D");
 	
+	//lemlib::Pose pose = chassis.getPose();
+    
+
 	pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
-            /*pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+            pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading*/
+            pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
 
-			pros::lcd::set_text(0, "Left: " + std::to_string(driveLeft.get_position()));
-			pros::lcd::set_text(1, "Right: " + std::to_string(driveRight.get_position()));
+			//pros::lcd::set_text(0, "Left: " + std::to_string(driveLeft.get_position()));
+			//pros::lcd::set_text(1, "Right: " + std::to_string(driveRight.get_position()));
 
+			// print the x, y, and theta values of the pose
+			/*pose = chassis.getPose();
+			printf("X: %f, Y: %f, Theta: %f\n", pose.x, pose.y, pose.theta);*/
 			
 			/*pros::lcd::set_text(0, "Left1: "+ std::to_string(left1.get_position()));
 			pros::lcd::set_text(1, "Left2: "+ std::to_string(left2.get_position()));
