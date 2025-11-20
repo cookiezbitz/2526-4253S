@@ -44,22 +44,7 @@ int delayIntake = 200;
 }
 */
 
-void redRight(){
-
-}
-
-void redLeft(){
-
-}
-
-void blueRight(){
-
-}
-
-void blueLeft(){
-
-}
-
+//bad
 void leftAuton(){
     chassis.setPose(62,-16.247,270);
 
@@ -106,7 +91,7 @@ void leftAuton(){
 
 }
 
-void altLeftAuton(){
+void originalLeftAuton(){
     chassis.setPose(62,-16.247,270);
 
     // intake directly into blocks
@@ -144,6 +129,59 @@ void altLeftAuton(){
     toggleIntake(true, 1);
     pros::delay(2000);
     toggleIntake(false,0);
+}
+
+void altLeftAuton(){
+    chassis.setPose(62,-16.247,270);
+
+    // intake directly into blocks
+    chassis.moveToPoint(36,-24,5000,{.minSpeed=30,.earlyExitRange = 3},false);
+    toggleIntake(true, 0);
+
+    chassis.moveToPoint(22,-22,5000,{.maxSpeed=60,.minSpeed=40,.earlyExitRange = 1},false);
+    toggleLoader(true);
+    chassis.moveToPoint(15,-22,3000,{.maxSpeed=60,.minSpeed=40,.earlyExitRange = 0},false);
+
+    chassis.moveToPoint(22,-22,5000,{.forwards = false, .maxSpeed=80,.minSpeed=50},false);
+
+    toggleLoader(false);
+
+    chassis.turnToHeading(135,1000,{.maxSpeed=60,.earlyExitRange=10},true);
+
+    // 24,24 or something
+    // back into 10,-10 OR ADJUST to score
+
+    chassis.moveToPoint(12+3+2,-12-1,3000,{.forwards=false, .maxSpeed=70, .minSpeed=40, .earlyExitRange = 1},false);
+    toggleIntake(true,1);
+
+
+    pros::delay(600);
+    toggleIntake(true, -1);
+    pros::delay(200);
+    toggleIntake(false, 0);
+    pros::delay(500);
+
+
+
+    //toggleLoader(false);
+    // go to x, -48 to set up for nelson
+    chassis.moveToPoint(48,-48,5000,{.forwards = true, .maxSpeed=80/*,.minSpeed=50,.earlyExitRange=2*/},false);
+    toggleIntake(false,0);
+    chassis.turnToPoint(72,-48,1000,{.maxSpeed=60},true);
+
+    // "reset " pos
+    //chassis.setPose(48,-48,chassis.getPose().theta);
+    // match loader
+    toggleLoader(true);
+    toggleIntake(true,0);
+    pros::delay(200);
+    chassis.moveToPoint(65,-48,3000,{.maxSpeed=60,.minSpeed=40},false);
+    pros::delay(1000);
+
+    chassis.moveToPoint(30, -48, 2000,{.forwards = false,.minSpeed=60,.earlyExitRange=2},false);
+    toggleIntake(true, 1);
+    pros::delay(2000);
+    toggleIntake(false,0);
     //chassis.moveToPoint(60,-48,3000,{.maxSpeed=60,.minSpeed=40},false);
 }
 
@@ -151,15 +189,74 @@ void AWPright(){
     chassis.setPose(0,0,0);
 
     toggleIntake(true,0);
-    chassis.moveToPoint(6,38.5,2000, {.maxSpeed = 50});
+    chassis.moveToPoint(6,38.5,2000, {.minSpeed = 60, .earlyExitRange=10});
+    chassis.moveToPoint(6,38.5,2000, {.maxSpeed = 40, .earlyExitRange=1});
 
-    chassis.turnToHeading(125,2000,{.maxSpeed=80});
+    chassis.turnToHeading(125,1000,{.maxSpeed=80, .earlyExitRange=20});
     //toggleIntake(false,0);
 
     chassis.moveToPose(34,12,180,3000,{.maxSpeed=80,.minSpeed=40,.earlyExitRange=2});
 
-    chassis.moveToPoint(34,7,2000,{.maxSpeed=80});
-    chassis.moveToPoint(34,32,2000,{.forwards=false,.minSpeed=40});
+    chassis.moveToPoint(34,8,2000,{.maxSpeed=80}); // match loader
+    
+    chassis.moveToPoint(34,29,2000,{.forwards=false,.minSpeed=50,.earlyExitRange=5});
+    chassis.moveToPoint(34,29,2000,{.forwards=false,.maxSpeed=30},true);
+    toggleIntake(true,1);
+}
+
+void AWPleft(){ // based on altLeft
+    chassis.setPose(62,-16.247,270);
+
+    // intake directly into blocks
+    chassis.moveToPoint(36,-24,5000,{.minSpeed=30,.earlyExitRange = 3},false);
+    toggleIntake(true, 0);
+
+    chassis.moveToPoint(22,-24,5000,{.maxSpeed=60,.minSpeed=40,.earlyExitRange = 1},false);
+    toggleLoader(true);
+    chassis.moveToPoint(15,-24,3000,{.maxSpeed=60,.minSpeed=40,.earlyExitRange = 0},false);
+
+    chassis.moveToPoint(22,-24,5000,{.forwards = false, .maxSpeed=80,.minSpeed=50},false); // change y from 22 to 24
+
+    chassis.turnToHeading(135,1000,{.maxSpeed=60,.earlyExitRange=10},true);
+
+    // 24,24 or something
+    // back into 10,-10 OR ADJUST to score
+
+    chassis.moveToPoint(12+3,-12,3000,{.forwards=false, .maxSpeed=60, .minSpeed=40, .earlyExitRange = 4},false);
+    toggleIntake(true,1);
+
+
+    pros::delay(600);
+    toggleIntake(true, -1);
+    pros::delay(200);
+    toggleIntake(false, 0);
+    pros::delay(500);
+
+
+    //toggleLoader(false);
+    // go to x, -48 to set up for nelson
+    chassis.moveToPoint(48,-48,5000,{.forwards = true, .maxSpeed=80,.minSpeed=40,.earlyExitRange=3},false);
+    toggleIntake(false,0);
+    chassis.turnToPoint(72,-48,1000,{.maxSpeed=60,.minSpeed=30,.earlyExitRange=10},false);
+    chassis.moveToPoint(30, -48, 2000,{.forwards = false,.minSpeed=60},false); // long goal
+    toggleIntake(true, 1);
+    pros::delay(1500);
+    toggleIntake(false,0);
+
+    chassis.moveToPoint(40,-48,2000,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=3},false);
+    chassis.turnToHeading(0,1000,{.maxSpeed=60,.earlyExitRange=10},false);
+    // potentially pick up middle 3 but depending on time
+
+    // cross to other side
+    chassis.moveToPoint(40,52,3000,{.minSpeed=40},false);
+    chassis.turnToHeading(90,700,{.maxSpeed=60,.earlyExitRange=10},false);
+
+    chassis.moveToPoint(50,52,3000,{.minSpeed=40,.earlyExitRange=3},false);
+    toggleIntake(true,0);
+    pros::delay(1500);
+
+    chassis.moveToPoint(30,52,3000,{.forwards=false,.minSpeed=50,.earlyExitRange=2},false);
+    toggleIntake(true,1);
 }
 
 void basic(){
@@ -200,8 +297,9 @@ void autonomous() {
     //basic();
     
     //leftAuton();
-    //altLeftAuton();
-    AWPright();
+    altLeftAuton();
+    //AWPright();
+    //AWPleft();
     //skills();
 }
 
