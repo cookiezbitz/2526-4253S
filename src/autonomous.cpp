@@ -405,6 +405,8 @@ void move_to_point(double goal_x, double goal_y, double timeout, double early_ex
     }
 }
 
+double kTheta = 2;
+
 void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_distance, double timeout, double early_exit_range){
     time_elapsed = 0; // reset time elapsed at start of movement
 
@@ -412,6 +414,9 @@ void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_d
 
     double error_x = goal_x - x_global;
     double error_y = goal_y - y_global;
+
+    /*double error_theta = goal_theta - theta_global;
+    error_theta = atan2(sin(error_theta), cos(error_theta));*/
 
     double carrot_x = goal_x - (total_error * lead_distance * sin(goal_theta)); // NEW
     double carrot_y = goal_y - (total_error * lead_distance * cos(goal_theta)); // NEW
@@ -427,12 +432,16 @@ void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_d
     double direct_power;
     double left_power;
     double right_power;
+    //double turn_power;
 
     while(total_error >= early_exit_range && time_elapsed < timeout){
         // update errors
         error_x = goal_x - x_global;
         error_y = goal_y - y_global; 
         total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // TO GOAL POINT
+
+        //error_theta = goal_theta - theta_global;
+        //error_theta = atan2(sin(error_theta), cos(error_theta));
         
         // update carrot point + errors
         carrot_x = goal_x - (total_error * lead_distance * sin(goal_theta)); //
@@ -445,12 +454,17 @@ void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_d
         alpha = atan2(sin(alpha), cos(alpha)); // into [-pi, pi]
 
         curvature = (2.0 * sin(alpha)) / (carrot_error); // radius of the circular path to follow
+        if (curvature > 1.0) curvature = 1.0;
+        if (curvature < -1.0) curvature = -1.0;
 
         // calculate power
         direct_power = drivePID(carrot_error); // [0, 100]  edited
 
-        left_power = direct_power * (1.0 - (curvature * track_width)/2.0);
-        right_power = direct_power * (1.0 + (curvature * track_width)/2.0);
+        // heading correction (should not break curvature)
+        //turn_power = kTheta * error_theta;
+
+        left_power = direct_power * (1.0 - (curvature * track_width)/2.0); //- turn_power;
+        right_power = direct_power * (1.0 + (curvature * track_width)/2.0); //+ turn_power;
         
         driveLeft.move(left_power);
         driveRight.move(right_power);

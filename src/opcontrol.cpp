@@ -66,8 +66,6 @@ void driverColorSort(){
 void opcontrol() {
 	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
 	while (true) {
-		// loop for taking in driver controls
-		// get joystick positions
 		led.set_all(0X0000FF); // blue = 0X0000FF red = 0XFF0000
 		led2.set_all(0X0000FF);
 		led.update();
