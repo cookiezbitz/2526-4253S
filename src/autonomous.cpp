@@ -234,7 +234,6 @@ void AWPleft(){ // based on altLeft
 
 
     //toggleLoader(false);
-    // go to x, -48 to set up for nelson
     chassis.moveToPoint(48,-48,5000,{.forwards = true, .maxSpeed=80,.minSpeed=40,.earlyExitRange=3},false);
     toggleIntake(false,0);
     chassis.turnToPoint(72,-48,1000,{.maxSpeed=60,.minSpeed=30,.earlyExitRange=10},false);
@@ -316,10 +315,10 @@ double prev_rotation = 0;
 void odom(){
     while(true){
         double current_heading = inertial.get_heading();
-        double delta_heading = current_heading - prev_heading;
+        double delta_heading = (current_heading - prev_heading) * M_PI / 180.0; // needs to be in radians for trig
         prev_heading = current_heading; // save current heading as prev for next loop
 
-        double current_rotation = vertPod.get_position()/100.0;
+        double current_rotation = vertPod.get_position()/100.0; // centidegrees --> degrees
         double delta_rotation = current_rotation - prev_rotation;
         prev_rotation = current_rotation; // save current rotation reading as prev for next loop
 
@@ -370,21 +369,33 @@ void move_to_point(double goal_x, double goal_y, double timeout, double early_ex
     double error_x = goal_x - x_global;
     double error_y = goal_y - y_global;
 
-    double path_radius = (total_error * total_error) / (2 * error_x); // radius of the circular path to follow
+    double target_angle = atan2(error_y, error_x); // radians
+    double alpha = target_angle - theta_global;
+    alpha = atan2(sin(alpha), cos(alpha)); // into [-pi, pi]
+
+    double curvature = (2.0 * sin(alpha)) / (total_error); // radius of the circular path to follow
 
     double direct_power;
     double left_power;
     double right_power;
 
-    while(total_error >= early_exit_range || time_elapsed < timeout){
+    while(total_error >= early_exit_range && time_elapsed < timeout){
+        // update errors
         error_x = goal_x - x_global;
         error_y = goal_y - y_global; 
-        total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // update errors
+        total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2)));
 
+        target_angle = atan2(error_y, error_x);
+        alpha = target_angle - theta_global;
+        alpha = atan2(sin(alpha), cos(alpha));
+    
+        curvature = (2.0 * sin(alpha)) / total_error;
+
+        // calculate power
         direct_power = drivePID(total_error); // [0, 100]
 
-        left_power = direct_power + (track_width * direct_power)/(2 * path_radius);
-        right_power = direct_power - (track_width * direct_power)/(2 * path_radius);
+        left_power = direct_power * (1.0 - (curvature * track_width)/2.0);
+        right_power = direct_power * (1.0 + (curvature * track_width)/2.0);
         
         driveLeft.move(left_power);
         driveRight.move(right_power);
@@ -407,13 +418,18 @@ void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_d
 
     double carrot_error = sqrt((pow(carrot_x - x_global, 2) + pow(carrot_y - y_global, 2)));; // NEW
 
-    double path_radius = (carrot_error * carrot_error) / (2 * error_x); // radius of the circular path to follow
+    double target_angle = atan2(carrot_y - y_global, carrot_x - x_global); // radians
+    double alpha = target_angle - theta_global;
+    alpha = atan2(sin(alpha), cos(alpha)); // into [-pi, pi]
+
+    double curvature = (2.0 * sin(alpha)) / (carrot_error); // radius of the circular path to follow
 
     double direct_power;
     double left_power;
     double right_power;
 
-    while(total_error >= early_exit_range || time_elapsed < timeout){
+    while(total_error >= early_exit_range && time_elapsed < timeout){
+        // update errors
         error_x = goal_x - x_global;
         error_y = goal_y - y_global; 
         total_error = sqrt((pow(goal_x - x_global, 2) + pow(goal_y - y_global, 2))); // TO GOAL POINT
@@ -424,11 +440,17 @@ void move_to_pose(double goal_x, double goal_y, double goal_theta, double lead_d
 
         carrot_error = sqrt((pow(carrot_x - x_global, 2) + pow(carrot_y - y_global, 2))); // TO CARROT POINT
 
+        target_angle = atan2(carrot_y - y_global, carrot_x - x_global); // radians
+        alpha = target_angle - theta_global;
+        alpha = atan2(sin(alpha), cos(alpha)); // into [-pi, pi]
 
+        curvature = (2.0 * sin(alpha)) / (carrot_error); // radius of the circular path to follow
+
+        // calculate power
         direct_power = drivePID(carrot_error); // [0, 100]  edited
 
-        left_power = direct_power + (track_width * direct_power)/(2 * path_radius);
-        right_power = direct_power - (track_width * direct_power)/(2 * path_radius);
+        left_power = direct_power * (1.0 - (curvature * track_width)/2.0);
+        right_power = direct_power * (1.0 + (curvature * track_width)/2.0);
         
         driveLeft.move(left_power);
         driveRight.move(right_power);
