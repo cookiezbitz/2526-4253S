@@ -30,20 +30,23 @@ void initialize() {
 	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	
-	loaderPiston.set_value(false);
+	// pneumatics
+	loaderPiston.set_value(false); 
+	doublePark.set_value(false); 
+	doubleParkClamp.set_value(false); 
+	scoringModifier.set_value(true); 
+	wingPiston.set_value(false); 
 
 	//
-
 
 	inertial.reset();
 	inertial.tare_heading();
 
 
-	// reset pistons and encoders
-
+	// reset and encoders
 	vertPod.reset_position();
 	vertPod.set_data_rate(15);
-	//arm_rotation.set_reversed(true);
+	//vertPod.set_reversed(true);
 
 	chassis.calibrate();
 

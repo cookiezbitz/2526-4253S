@@ -31,12 +31,12 @@ pros::Motor lowerIntake(6, pros::MotorGearset::blue, pros::MotorEncoderUnits::de
 pros::Motor upperIntake(7, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 
 pros::adi::DigitalOut loaderPiston('B');
-pros::adi::DigitalOut scoringModifier('B'); // WIRE
-pros::adi::DigitalOut doublePark('C'); // WIRE
+pros::adi::DigitalOut scoringModifier('F'); 
+pros::adi::DigitalOut doublePark('D'); 
 pros::adi::DigitalOut doubleParkClamp('C');
+pros::adi::DigitalOut wingPiston('E');
 
-
-pros::Imu inertial(4);
+pros::Imu inertial(17);
 
 pros::Rotation vertPod(19); // vert tracking
 
@@ -46,12 +46,12 @@ pros::adi::Led led2('B',17); // WIRE
 
 lemlib::TrackingWheel verticalEncoder(&vertPod, lemlib::Omniwheel::NEW_2,-4); // need to edit
 
-lemlib::OdomSensors sensors(nullptr,nullptr,nullptr,nullptr, &inertial);
+lemlib::OdomSensors sensors(&verticalEncoder,nullptr,nullptr,nullptr, &inertial);
 
 // lateral PID controller
-lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
+lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              3, // derivative gain (kD)
+                                              35, // derivative gain (kD)
                                               0, // anti windup
                                               0, // small error range, in inches
                                               300, // small error range timeout, in milliseconds
@@ -61,6 +61,9 @@ lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
 );
 
 /*
+
+9,0,45
+
 lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               8, // derivative gain (kD)

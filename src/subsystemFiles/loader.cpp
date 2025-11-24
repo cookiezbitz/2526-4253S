@@ -15,8 +15,3 @@ void setLoader(){
 void toggleLoader(bool status){
     loaderPiston.set_value(status);
 }
-
-
-void switchGrabber(){
-    //
-}

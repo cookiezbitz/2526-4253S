@@ -258,6 +258,7 @@ void AWPleft(){ // based on altLeft
     toggleIntake(true,1);
 }
 
+
 void basic(){
     chassis.setPose(0,0,0);
 
@@ -274,11 +275,11 @@ void basic(){
 void pidtuning(){
     chassis.setPose(0,0,0);
 
-    chassis.moveToPoint(0,24,5000);
-    //chassis.turnToHeading(90, 5000);
+    //chassis.moveToPoint(0,24,5000);
+    chassis.turnToHeading(90, 5000);
 
 }
-
+\
 void skills(){
     chassis.setPose(-62,-15,90);
     chassis.moveToPose(-24,-23,110,5000);

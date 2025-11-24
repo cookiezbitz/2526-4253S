@@ -32,6 +32,7 @@ extern pros::adi::DigitalOut loaderPiston;
 extern pros::adi::DigitalOut scoringModifier;
 extern pros::adi::DigitalOut doublePark;
 extern pros::adi::DigitalOut doubleParkClamp;
+extern pros::adi::DigitalOut wingPiston;
 
 extern pros::Imu inertial;
 

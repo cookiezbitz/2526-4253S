@@ -6,6 +6,14 @@ bool intakeOn = false;
 bool intakeReversed = false;
 int power = 127;
 
+bool intakePistonStatus = true;
+void setIntakePiston(){
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+        intakePistonStatus = !intakePistonStatus;
+        scoringModifier.set_value(intakePistonStatus);
+    }
+}
+
 void setIntake(){
     // R1: run first and second q 
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
@@ -23,6 +31,7 @@ void setIntake(){
         lowerIntake.brake();
         upperIntake.brake();
     }
+    setIntakePiston();
 }
 
 void toggleIntake(bool status, double state){
