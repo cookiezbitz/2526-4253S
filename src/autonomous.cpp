@@ -274,8 +274,8 @@ void basic(){
 void pidtuning(){
     chassis.setPose(0,0,0);
 
-    //chassis.moveToPoint(0,24,5000);
-    chassis.turnToHeading(90, 5000);
+    chassis.moveToPoint(0,24,5000);
+    //chassis.turnToHeading(90, 5000);
 
 }
 
@@ -293,10 +293,10 @@ void autonomous() {
     //blueRight();
     //blueLeft();
 
-    //basic();
+    pidtuning();
     
     //leftAuton();
-    altLeftAuton();
+    //altLeftAuton();
     //AWPright();
     //AWPleft();
     //skills();

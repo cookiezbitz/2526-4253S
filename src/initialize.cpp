@@ -28,7 +28,6 @@ void initialize() {
 	driveRight.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	
 	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	midIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	
 	loaderPiston.set_value(false);
@@ -39,11 +38,11 @@ void initialize() {
 	inertial.reset();
 	inertial.tare_heading();
 
-	optical.set_led_pwm(50);
-	optical.set_integration_time(15);
 
-	arm_rotation.reset_position();
-	arm_rotation.set_data_rate(15);
+	// reset pistons and encoders
+
+	vertPod.reset_position();
+	vertPod.set_data_rate(15);
 	//arm_rotation.set_reversed(true);
 
 	chassis.calibrate();

@@ -5,7 +5,7 @@
 
 int delaySort = 190;
 int delayForward = 200;
-
+/*
 void driverColorSort(){
     while(true){
         if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)&&controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
@@ -47,7 +47,7 @@ void driverColorSort(){
 		pros::delay(15);
     }
 }
-
+*/
 
 
 /**

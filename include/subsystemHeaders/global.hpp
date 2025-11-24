@@ -29,16 +29,15 @@ extern pros::Motor midIntake;
 extern pros::Motor upperIntake;
 
 extern pros::adi::DigitalOut loaderPiston;
+extern pros::adi::DigitalOut scoringModifier;
+extern pros::adi::DigitalOut doublePark;
+extern pros::adi::DigitalOut doubleParkClamp;
 
 extern pros::Imu inertial;
 
 extern pros::adi::Led led;
 extern pros::adi::Led led2;
 
-//
-extern pros::Optical optical;
-
-extern pros::Rotation arm_rotation;
 extern pros::Rotation vertPod;
 
 extern lemlib::Chassis chassis;
