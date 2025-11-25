@@ -65,6 +65,7 @@ void driverColorSort(){
  */
 void opcontrol() {
 	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
+	//chassis.setPose(62,-16.427,270);
 	while (true) {
 		led.set_all(0X0000FF); // blue = 0X0000FF red = 0XFF0000
 		led2.set_all(0X0000FF);

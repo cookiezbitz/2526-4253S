@@ -277,9 +277,10 @@ void pidtuning(){
 
     //chassis.moveToPoint(0,24,5000);
     chassis.turnToHeading(90, 5000);
+    chassis.turnToHeading(0, 5000);
 
 }
-\
+
 void skills(){
     chassis.setPose(-62,-15,90);
     chassis.moveToPose(-24,-23,110,5000);
@@ -288,14 +289,87 @@ void skills(){
     chassis.moveToPose(-65,-48.877,270,5000);
 }
 
+void newLeftAuto(){
+    chassis.setPose(62,-16.427,270);
+
+    //chassis.moveToPoint(36,-22,5000,{.minSpeed=30,.earlyExitRange = 3},false);
+    chassis.moveToPoint(22,-22,1500,{.minSpeed=40,.earlyExitRange=10},true);
+    toggleIntake(true,0);
+    chassis.moveToPoint(22,-22,1500,{.maxSpeed=60},false);
+    toggleLoader(true);
+    pros::delay(200);
+
+    //chassis.moveToPoint(24,-22,400,{.forwards=false},false);
+
+    chassis.turnToHeading(135,1000,{.maxSpeed=80,.earlyExitRange=10},false);
+
+    chassis.setPose(22,-22,chassis.getPose().theta);
+
+
+            //chassis.moveToPoint(14,-12,3000,{.forwards=false,.maxSpeed=60,.earlyExitRange=1},false);
+            //chassis.moveToPose(14-2,-12+2,135,3000,{.forwards=false,.maxSpeed=60,.minSpeed=20,.earlyExitRange=1},false);
+    chassis.moveToPose(10,-10,135,1000,{.forwards=false,.maxSpeed=60,.minSpeed=20,.earlyExitRange=1},true);
+    toggleIntake(true,-1); // in case of intake jam
+    pros::delay(500);
+    toggleIntake(false,0);
+    
+    chassis.waitUntilDone();
+    toggleIntake(true,1);
+    setScoreHeight(false);
+    pros::delay(1600);  // increased time 750 --> 1500 ms
+
+    //toggleIntake(true,-1); // no need
+   
+
+
+    // 2nd segment
+
+    chassis.moveToPoint(48,-47,2000,{.earlyExitRange=0},true); // accurate?
+
+    toggleIntake(false,0);
+    setScoreHeight(true); // reset intake 
+    chassis.waitUntilDone();
+    
+    chassis.turnToHeading(90,1000,{.maxSpeed=80,.earlyExitRange=5},true);
+    chassis.setPose(48,-47,chassis.getPose().theta); // correct drift
+
+    toggleLoader(true);
+    pros::delay(200);
+
+    // into loader
+    chassis.moveToPoint(55+5,-47,1000,{.minSpeed=70},true); 
+    
+    toggleIntake(true, 0);
+        /*chassis.waitUntilDone();
+        chassis.moveToPoint(52,-47,500,{.forwards=false,.minSpeed=40,.earlyExitRange=1},false);
+        chassis.moveToPoint(55+5,-47,500,{.minSpeed=70},true); */
+    pros::delay(1100); // ~optimal intake delay (3 blocks)
+
+        // no need - in again
+        /*pros::delay(500);
+        chassis.moveToPoint(52,-47,2000,{.forwards=false,.minSpeed=30,.earlyExitRange=0.7},false);
+        chassis.moveToPoint(55+5,-47,750,{.minSpeed=70},false);
+        pros::delay(800);*/
+
+    chassis.moveToPoint(29.5,-47,1500,{.forwards=false,.earlyExitRange=1},false);
+    toggleIntake(true,1); // score; might jam
+        /*pros::delay(200);
+        toggleIntake(true,-1);
+        pros::delay(200);
+        toggleIntake(true,1);*/
+    
+}
+
 void autonomous() {
     //redRight();
     //redLeft();
     //blueRight();
     //blueLeft();
 
-    pidtuning();
+    //pidtuning();
     
+    newLeftAuto();
+
     //leftAuton();
     //altLeftAuton();
     //AWPright();

@@ -24,8 +24,8 @@ void setDoublePark(){
 }
 
 void setDrive(){ // use controller input
-    int forward = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y)*0.85;
-    int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)*0.5;
+    int forward = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+    int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
 
     chassis.arcade(forward,-turn);
 

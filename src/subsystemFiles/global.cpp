@@ -44,7 +44,7 @@ pros::Rotation vertPod(19); // vert tracking
 pros::adi::Led led('H',17);
 pros::adi::Led led2('B',17); // WIRE
 
-lemlib::TrackingWheel verticalEncoder(&vertPod, lemlib::Omniwheel::NEW_2,-4); // need to edit
+lemlib::TrackingWheel verticalEncoder(&vertPod, 1.999,-4); // need to edit
 
 lemlib::OdomSensors sensors(&verticalEncoder,nullptr,nullptr,nullptr, &inertial);
 
@@ -77,6 +77,18 @@ lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
 */
 
 // angular PID controller
+lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
+                                              0, // integral gain (kI)
+                                              15, // derivative gain (kD)
+                                              0, // anti windup
+                                              2.5, // small error range, in inches
+                                              100, // small error range timeout, in milliseconds
+                                              5, // large error range, in inches
+                                              300, // large error range timeout, in milliseconds
+                                              0 // maximum acceleration (slew)
+);
+
+/*
 lemlib::ControllerSettings angular_controller(1.4, // proportional gain (kP)
                                               0, // integral gain (kI)
                                               0, // derivative gain (kD)
@@ -87,6 +99,7 @@ lemlib::ControllerSettings angular_controller(1.4, // proportional gain (kP)
                                               500, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
+*/
 
 lemlib::Drivetrain drivetrain(&driveLeft, // left motor group
     &driveRight, // right motor group
