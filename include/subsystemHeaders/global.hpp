@@ -25,7 +25,6 @@ extern pros::Motor right2;
 extern pros::Motor right3;
 
 extern pros::Motor lowerIntake;
-extern pros::Motor midIntake;
 extern pros::Motor upperIntake;
 
 extern pros::adi::DigitalOut loaderPiston;

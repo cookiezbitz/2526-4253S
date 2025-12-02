@@ -8,26 +8,23 @@
 
 
 bool isBlue;
-bool armGoalPosition;
 
 int intakeTimer = 0;
 bool intakeSlowed = false;
 
 // motor ports + radio port ___
-pros::MotorGroup driveLeft({-2, -4, -8}, pros::MotorGearset::blue); // left motor group (reversed)
-pros::MotorGroup driveRight({3, 9, 10}, pros::MotorGearset::blue); // right motor group (normal)
+pros::MotorGroup driveLeft({-2, -4, -16}, pros::MotorGearset::blue); // left motor group (reversed)
+pros::MotorGroup driveRight({3, 18, 10}, pros::MotorGearset::blue); // right motor group (normal)
 
 // for debugging
 pros::Motor left1(-2, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor left2(-4, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor left3(-8, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
+pros::Motor left3(-16, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor right1(3, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor right2(9, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);     
+pros::Motor right2(18, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);     
 pros::Motor right3(10, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 
-
 pros::Motor lowerIntake(6, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
-//pros::Motor midIntake(10, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 pros::Motor upperIntake(7, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 
 pros::adi::DigitalOut loaderPiston('B');
@@ -44,7 +41,7 @@ pros::Rotation vertPod(19); // vert tracking
 pros::adi::Led led('H',17);
 pros::adi::Led led2('B',17); // WIRE
 
-lemlib::TrackingWheel verticalEncoder(&vertPod, 1.999,-4); // need to edit
+lemlib::TrackingWheel verticalEncoder(&vertPod, 1.999,-0.75); // need to edit
 
 lemlib::OdomSensors sensors(&verticalEncoder,nullptr,nullptr,nullptr, &inertial);
 

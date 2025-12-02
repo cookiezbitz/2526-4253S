@@ -65,21 +65,21 @@ void driverColorSort(){
  */
 void opcontrol() {
 	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
-	//chassis.setPose(62,-16.427,270);
+	//chassis.setPose(48,-16.427,180);
 	while (true) {
-		led.set_all(0X0000FF); // blue = 0X0000FF red = 0XFF0000
-		led2.set_all(0X0000FF);
-		led.update();
-		led2.update();
+		
 
 		pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
         pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
         pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+
+		pros::lcd::print(3, "lower: %f", lowerIntake.get_actual_velocity()); // act of lower intake
+		pros::lcd::print(4, "upper: %f", upperIntake.get_actual_velocity()); // act of upper intake
+		
 		
 		setDrive();
 		setIntake();
 		setLoader();
-		//setArm();
 
 		pros::delay(15);
 	}

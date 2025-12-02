@@ -2,9 +2,7 @@
 #include "pros/misc.h"
 #include "subsystemHeaders/global.hpp"
 
-bool intakeOn = false;
-bool intakeReversed = false;
-int power = 127;
+int intakeState = 0;
 
 bool intakePistonStatus = true;
 void setIntakePiston(){
@@ -18,7 +16,7 @@ void setIntake(){
     // R1: run first and second q 
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
         lowerIntake.move(127);
-        upperIntake.move(-70);
+        upperIntake.move(-40);
     // R2: run ALL forward
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
         lowerIntake.move(127);
@@ -44,12 +42,14 @@ void toggleIntake(bool status, double state){
             upperIntake.move(-70);
         }else{
             lowerIntake.move(127);
-            upperIntake.move(-70);
+            upperIntake.move(-40);
         }
     }else{
         lowerIntake.brake();
         upperIntake.brake();
     }
+    
+    intakeState = state; //
 }
 
 void setScoreHeight(bool intakePosition){

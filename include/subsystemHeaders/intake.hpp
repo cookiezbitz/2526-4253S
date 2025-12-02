@@ -1,7 +1,6 @@
 //#include "main.h"
 
-extern bool intakeOn;
-extern bool intakeReversed;
+extern int intakeState;
 
 void setIntake(); // button control
 
