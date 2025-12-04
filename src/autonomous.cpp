@@ -328,7 +328,7 @@ void pidtuning(){
 
 }
 
-void skills(){
+void skills(){ // not done
     chassis.setPose(62,-16.427,270);
 
     chassis.moveToPoint(22,-24,1500,{.minSpeed=20,.earlyExitRange=15},true);
@@ -453,15 +453,15 @@ void skills(){
 
 }
 
-void leftAuto_CenterGoal(){ // WORKS!
+void leftAuto_CenterGoal(){ // !
     chassis.setPose(62,-16.427,270);
 
-    //chassis.moveToPoint(36,-22,5000,{.minSpeed=30,.earlyExitRange = 3},false);
     chassis.moveToPoint(22,-24,1500,{.minSpeed=20,.earlyExitRange=15},true);
-    toggleIntake(true,0);
+    //toggleIntake(true,0);
     chassis.moveToPoint(22,-22,1500,{.maxSpeed=30},true);
+    toggleIntake(true,0);
     toggleLoader(true);
-    //pros::delay(200);
+
 
 
     chassis.turnToHeading(135,1000,{.maxSpeed=80,.earlyExitRange=10},false);
@@ -469,13 +469,22 @@ void leftAuto_CenterGoal(){ // WORKS!
     //chassis.setPose(22,-22,chassis.getPose().theta); // fake reset
 
     chassis.moveToPose(10.5,-10.5,135,1000,{.forwards=false,.maxSpeed=60,.minSpeed=20,.earlyExitRange=0},true);
-    //chassis.waitUntil(12);
-    //toggleIntake(true,1);
-
+    toggleIntake(false,0);
     chassis.waitUntil(16); //
     toggleIntake(true,1);
     setScoreHeight(false);
     pros::delay(1000); // increased time 800 --> 1000 ms
+
+    /*
+    
+    chassis.moveToPoint(11.5,-10,1000,{.forwards=false,.maxSpeed=60,.minSpeed=10},true);
+    
+    chassis.waitUntil(12);
+    toggleIntake(true,1); // score on center
+    setScoreHeight(false);
+    pros::delay(1000); // increased time 750 --> 1500 ms
+
+    */
    
 
 
@@ -522,8 +531,6 @@ void leftAuto_CenterGoal(){ // WORKS!
     chassis.moveToPoint(39,-37,1000,{.minSpeed=30},false);
     chassis.turnToHeading(90,750,{.minSpeed=15},false);
     chassis.moveToPoint(12,-37,2000,{.forwards=false,.maxSpeed=60,.minSpeed=0}); // can change to poses
-
-
 }
 
 void leftAuto_AWP(){ // AWP modified 12/1
@@ -706,7 +713,9 @@ void rightAuto_UseWing(){ // untested
 }
 
 void test(){
-    toggleIntake(true,1);
+    //toggleIntake(true,1);
+    chassis.setPose(0,0,0);
+    chassis.moveToPoint(0, 24, 3000);
 }
 
 void autonomous() {
@@ -716,14 +725,14 @@ void autonomous() {
     pros::Task antiJam(antiJamTask);
     
     //leftAuto_AWP(); // 1
-    leftAuto_CenterGoal(); // 2
+    //leftAuto_CenterGoal(); // 2
     
     //rightAuto_UseWing(); //
 
     //skills();
 
-    
-    //test(); // 7
+    test(); // 7
+
     antiJam.remove();
 
     //leftAuto_UseWing();

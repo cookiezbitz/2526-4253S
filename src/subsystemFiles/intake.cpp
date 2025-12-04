@@ -6,7 +6,7 @@ int intakeState = 0;
 
 bool intakePistonStatus = true;
 void setIntakePiston(){
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // was y
         intakePistonStatus = !intakePistonStatus;
         scoringModifier.set_value(intakePistonStatus);
     }
@@ -14,7 +14,7 @@ void setIntakePiston(){
 
 void setIntake(){
     // R1: run first and second q 
-    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+    if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
         lowerIntake.move(127);
         upperIntake.move(-40);
     // R2: run ALL forward
@@ -22,7 +22,7 @@ void setIntake(){
         lowerIntake.move(127);
         upperIntake.move(127);
     // L1: run ALL backward
-    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
         lowerIntake.move(-127);
         upperIntake.move(-127);
     }else{

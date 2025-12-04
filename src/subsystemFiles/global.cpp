@@ -41,14 +41,14 @@ pros::Rotation vertPod(19); // vert tracking
 pros::adi::Led led('H',17);
 pros::adi::Led led2('B',17); // WIRE
 
-lemlib::TrackingWheel verticalEncoder(&vertPod, 1.999,-0.75); // need to edit
+lemlib::TrackingWheel verticalEncoder(&vertPod, 2,-0.75); // need to edit
 
 lemlib::OdomSensors sensors(&verticalEncoder,nullptr,nullptr,nullptr, &inertial);
 
 // lateral PID controller
-lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
+lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              35, // derivative gain (kD)
+                                              50, // derivative gain (kD)
                                               0, // anti windup
                                               0, // small error range, in inches
                                               300, // small error range timeout, in milliseconds
@@ -63,7 +63,7 @@ lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
 
 lemlib::ControllerSettings lateral_controller(8, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              8, // derivative gain (kD)
+                                              36, // derivative gain (kD)
                                               3, // anti windup
                                               0.5, // small error range, in inches
                                               300, // small error range timeout, in milliseconds
