@@ -10,6 +10,7 @@ void setLoader(){
         loaderPiston.set_value(!loaderState);
         loaderState = !loaderState;
     }*/
+    
     if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
         loaderPiston.set_value(true);
     }else if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){

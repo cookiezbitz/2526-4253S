@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "testing",
+    "project_name": "left auton",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -317,7 +317,7 @@
     "upload_options": {
       "description": "4253S",
       "icon": "pros",
-      "slot": 7
+      "slot": 2
     },
     "use_early_access": false
   }
