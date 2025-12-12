@@ -29,7 +29,7 @@ void antiJamTask(){
 
     while(true){
         if(intakeState != 0){ // if intake isnt supposed to be jamming
-            if(fabs(upperIntake.get_actual_velocity()) < 10 || fabs(lowerIntake.get_actual_velocity()) < 10){ // rpm
+            if(fabs(upperIntake.get_actual_velocity()) < 100 || fabs(lowerIntake.get_actual_velocity()) < 100){ // rpm
                 stallCounter += 15;
             }else{
                 stallCounter = 0;
@@ -114,7 +114,7 @@ void pidtuning(){
 }
 
 void skills(){ // not done
-    chassis.setPose(62,-16.427,270); // left center starting pt
+    /*chassis.setPose(62,-16.427,270); // left center starting pt
 
     chassis.moveToPoint(22,-24,1500,{.minSpeed=20,.earlyExitRange=15},true);
     toggleIntake(true,0);
@@ -154,11 +154,16 @@ void skills(){ // not done
     //chassis.waitUntil(10);
     //toggleIntake(true,-1);
 
-    pros::delay(1200);
+    pros::delay(1200);*/
+
+
+    // taken from left AWP
+    chassis.setPose(47.5,-16.427,180);
+
 
     // 2nd segment - match loader
 
-    chassis.moveToPoint(47,47,2000,{.forwards=false,.earlyExitRange=0},true); 
+    chassis.moveToPoint(47.5,47,2000,{.forwards=false,.earlyExitRange=0},true); 
     chassis.waitUntil(16);
     toggleIntake(false,0); // reset intake 
     
@@ -276,6 +281,181 @@ void skills(){ // not done
     chassis.moveToPoint(62,0,2000,{.minSpeed=40},false);
     // keep intake on until end...
 
+}
+
+void auton_skills(){
+    // 1: taken from left AWP
+    chassis.setPose(47.5,16.427,0);
+
+
+    // 2: towards QI match loader
+
+    chassis.moveToPoint(47.5,47,1500,{.earlyExitRange=0},true); 
+    chassis.waitUntil(16);
+    
+    chassis.turnToHeading(90,1500,{.earlyExitRange=5},false);
+
+    toggleLoader(true);
+    pros::delay(500);
+
+    // 3: INTO LOADER - QUADRANT I
+    chassis.moveToPoint(55+10,47,1500,{.minSpeed=50},true); 
+    
+    toggleIntake(true, 0);
+
+    chassis.moveToPoint(55+10,47,500,{.minSpeed=50},false);
+    chassis.moveToPoint(50,47,200,{.forwards=false,.minSpeed=50},false);
+    //pros::delay(500);
+    chassis.moveToPoint(55+10,47,500,{.minSpeed=50},false); 
+    chassis.moveToPoint(50,47,200,{.forwards=false,.minSpeed=50},false);
+    chassis.moveToPoint(55+10,47,1250,{.minSpeed=50},false); 
+    //pros::delay(500);
+    //pros::delay(3000); // 3 blocks = 1200 ms
+
+
+    // go to other side
+    chassis.moveToPoint(50,47,1500,{.forwards=false,.minSpeed=30},true);
+    toggleLoader(false);
+    pros::delay(800);
+   
+    chassis.turnToHeading(180,1500,{.earlyExitRange=5},false);
+
+    /*chassis.moveToPoint(50,72,1500,{.forwards=false,.maxSpeed=60,.minSpeed=30},true);
+    chassis.waitUntilDone();
+    chassis.setPose(50,62,chassis.getPose().theta); // reset on field wall */
+
+    chassis.moveToPoint(50,34,2500,{.minSpeed=30},false);
+    chassis.turnToHeading(90,2000,{.minSpeed=10},false);
+
+    chassis.moveToPoint(29.5,34,2000,{.forwards=false,.minSpeed=30,.earlyExitRange=3},true);
+    
+    //chassis.turnToHeading(90,2000,{.earlyExitRange=5},false);
+
+    //chassis.moveToPoint(-29.5,60,10000,{.forwards=false,.maxSpeed=80,.minSpeed=30},false);
+    chassis.moveToPoint(-47,34,10000,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=2},false);
+
+    chassis.turnToHeading(0,2000,{.earlyExitRange=5},false);
+    chassis.moveToPoint(-47,47,2500,{.minSpeed=30},false);
+
+    // 4: SCORE IN LONG GOAL - QUADRANT II
+    chassis.turnToHeading(270,2000,{.maxSpeed=80},false);
+    chassis.moveToPoint(-29.5+6,47,1600,{.forwards=false,.minSpeed=30},true);
+
+    chassis.waitUntil(20);
+    toggleIntake(true,1);
+
+    chassis.waitUntilDone();
+    //pros::delay(3000);
+    chassis.setPose(-29.5,47,chassis.getPose().theta); // fake reset
+
+    toggleIntake(false,0);
+
+    // 5: QUADRANT II LOADER
+    toggleLoader(true);
+    pros::delay(500);
+
+    chassis.moveToPoint(-55-5,47,1500,{.minSpeed=65},true); 
+    
+    toggleIntake(true, 0);
+
+    chassis.moveToPoint(-50,47,200,{.forwards=false,.minSpeed=50},false);
+    chassis.moveToPoint(-55-10,47,500,{.minSpeed=50},false); 
+    chassis.moveToPoint(-50,47,200,{.forwards=false,.minSpeed=50},false);
+    chassis.moveToPoint(-55-10,47,1250,{.minSpeed=50},false); 
+    //pros::delay(2000); // 3 blocks = 1200 ms
+    
+    // 6: SCORE AGAIN QUADRANT II LONG GOAL
+    chassis.moveToPoint(-29.5+2,47,2000,{.forwards=false,.minSpeed=30},true);
+    toggleLoader(false);
+    chassis.waitUntil(20);
+    toggleIntake(true,1);
+
+    pros::delay(2500);
+
+    // section 3
+    // 7: TRAVERSE OTHER SIDE, OTHER LONG GOAL
+    chassis.moveToPoint(-36-4,47,2000,{.minSpeed=30},true);
+    toggleIntake(true,-1); 
+    chassis.turnToHeading(180,2000,{.maxSpeed=80,.earlyExitRange=5},true);
+    //toggleIntake(true,1);
+    toggleIntake(false,0);
+    chassis.moveToPoint(-36-4,-47,6000,{.minSpeed=30,.earlyExitRange=36},false);
+    chassis.moveToPoint(-36-4,-47,6000,{.maxSpeed=65,.minSpeed=30},false);
+
+    // 8: INTO LOADER, QUADRANT III
+    chassis.turnToHeading(270,2000,{.maxSpeed=80,.minSpeed=20,.earlyExitRange=5},false);
+    toggleLoader(true);
+    pros::delay(500);
+    toggleIntake(true,0);
+
+    chassis.moveToPoint(-55-10,-47,1500,{.minSpeed=65},true); 
+
+    pros::delay(500);
+    chassis.moveToPoint(-55-10,-47,500,{.minSpeed=65},true); 
+    pros::delay(500);
+    chassis.moveToPoint(-55-10,-47,500,{.minSpeed=65},true); 
+    pros::delay(500);
+
+    //pros::delay(2000); // 3 blocks = 1200 ms
+
+    // mirror, into QIV 
+
+    // 9: TRAVERSE TO QUADRANT IV
+    //chassis.moveToPoint(-29.5,-60,2000,{.forwards=false,.minSpeed=30,.earlyExitRange=3},true);
+    chassis.moveToPoint(-55,-47,2000,{.minSpeed=30},true);
+    toggleLoader(false);
+    pros::delay(500);
+    chassis.moveToPoint(-29.5,-36,2000,{.forwards=false,.minSpeed=30,.earlyExitRange=3},true);
+    
+    //chassis.moveToPoint(29.5,-60,10000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true);
+    toggleIntake(false,0);
+    //chassis.moveToPoint(48,-60,10000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true);
+    chassis.moveToPoint(48,-36,10000,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=12},true);
+    chassis.moveToPoint(48,-36,10000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true);
+    chassis.turnToHeading(0,2000,{.earlyExitRange=5},false);
+
+    chassis.moveToPoint(48,-47,5000,{.forwards=false,.minSpeed=30},true);
+
+    // 10: SCORE IN LONG GOAL - QUADRANT IV
+    chassis.turnToHeading(90,2000,{.maxSpeed=80,.earlyExitRange=0},false);
+    chassis.moveToPoint(29.5-6,-47,2000,{.forwards=false,.minSpeed=30},true);
+
+    chassis.waitUntil(20);
+    toggleIntake(true,1);
+
+    // 11: QUADRANT IV LOADER
+    toggleLoader(true);
+    pros::delay(2000);
+    chassis.setPose(29.5,-47,chassis.getPose().theta); // fake reset
+    toggleIntake(false,0);
+    pros::delay(500);
+
+    chassis.moveToPoint(55+5,-47,1500,{.minSpeed=65},true); 
+    
+    toggleIntake(true, 0);
+
+    pros::delay(500);
+    chassis.moveToPoint(55+5,-47,500,{.minSpeed=65},true); 
+    pros::delay(500);
+    chassis.moveToPoint(55+5,-47,500,{.minSpeed=65},true); 
+    pros::delay(500);
+    //pros::delay(2000); // 3 blocks = 1200 ms
+
+    // 12: SCORE AGAIN QUADRANT IV LONG GOAL
+    chassis.moveToPoint(29.5-1,-47,2000,{.forwards=false,.minSpeed=30},true);
+    toggleLoader(false);
+    chassis.waitUntil(20);
+    toggleIntake(true,1);
+
+    pros::delay(2500);
+
+    // 13: BACK TO PARKING
+    chassis.moveToPoint(40,-47,2000,{.forwards=true,.minSpeed=40,.earlyExitRange=3},false);
+    chassis.moveToPose(62,-18,0,4000,{.minSpeed=40},true);
+    chassis.waitUntil(30);
+    toggleLoader(true);
+    chassis.moveToPoint(62,0,2000,{.minSpeed=50},false);
+    // keep intake on until end...
 }
 
 void leftAuto_CenterGoal(){ // !
@@ -763,7 +943,9 @@ void autonomous() {
     //leftAuto_AWP(); // 1
     //leftAuto_CenterGoal(); // 2
     
-    rightAuto_UseWing(); // 3
+    //rightAuto_UseWing(); // 3
+
+    auton_skills(); // 5  real auton skills
 
     //cheese_skills(); // 4
     //halfField_skills(); // 6
