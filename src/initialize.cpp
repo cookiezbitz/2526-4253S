@@ -28,7 +28,7 @@ void initialize() {
 	driveRight.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	
 	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD); //
 	
 	// pneumatics
 	loaderPiston.set_value(false); 

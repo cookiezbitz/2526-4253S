@@ -37,3 +37,6 @@ void setDrive(){ // use controller input
     setDoublePark();
 }
 
+void toggleWing(bool state){
+    wingPiston.set_value(state);
+}

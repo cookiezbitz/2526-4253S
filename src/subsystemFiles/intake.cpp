@@ -16,11 +16,12 @@ void setIntakePiston(){
 void setIntake(){
     // R1: run first and second q 
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
-        lowerIntake.move(127);
+        lowerIntake.move(120);
         upperIntake.move(-40);
+        //upperIntake.brake();
     // R2: run ALL forward
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
-        lowerIntake.move(127);
+        lowerIntake.move(120);
         upperIntake.move(127);
     // L1: run ALL backward
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)/*||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)*/){
@@ -36,13 +37,13 @@ void setIntake(){
 void toggleIntake(bool status, double state){
     if(status){
         if(state==1){
-            lowerIntake.move(127);
+            lowerIntake.move(120);
             upperIntake.move(127);
         }else if(state==-1){
-            lowerIntake.move(-70);
-            upperIntake.move(-70);
+            lowerIntake.move(-127);
+            upperIntake.move(-127);
         }else{
-            lowerIntake.move(127);
+            lowerIntake.move(120);
             upperIntake.move(-40);
         }
     }else{
@@ -50,8 +51,8 @@ void toggleIntake(bool status, double state){
         upperIntake.brake();
     }
     
-    //intakeState = state; //
-    intakeState = status;
+    intakeState = state; //
+    //intakeState = status;
 }
 
 void setScoreHeight(bool intakePosition){
