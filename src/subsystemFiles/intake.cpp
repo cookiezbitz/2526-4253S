@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/llemu.hpp"
 #include "pros/misc.h"
 #include "subsystemHeaders/global.hpp"
 
@@ -34,6 +35,28 @@ void setIntake(){
     setIntakePiston();
 }
 
+void toggleIntake(bool status, double state, int volt){
+    if(status){
+        if(state==1){
+            lowerIntake.move_voltage(volt*100);
+            upperIntake.move_voltage(127);
+        }else if(state==-1){
+            lowerIntake.move_voltage(-120);
+            upperIntake.move_voltage(-127);
+        }else{
+            //pros::lcd::print(3, ": %f", volt); // 
+            lowerIntake.move_voltage(volt*100);
+            upperIntake.move_voltage(-40);
+        }
+    }else{
+        lowerIntake.brake();
+        upperIntake.brake();
+    }
+    
+    intakeState = state; //
+    //intakeState = status;
+}
+
 void toggleIntake(bool status, double state){
     if(status){
         if(state==1){
@@ -51,8 +74,8 @@ void toggleIntake(bool status, double state){
         upperIntake.brake();
     }
     
-    intakeState = state; //
-    //intakeState = status;
+    //intakeState = state; //
+    intakeState = status;
 }
 
 void setScoreHeight(bool intakePosition){
