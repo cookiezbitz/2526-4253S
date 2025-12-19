@@ -7,8 +7,13 @@ bool doinkerDown = false;
 
 void setLoader(){
     /*if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){ 
-        loaderPiston.set_value(!loaderState);
-        loaderState = !loaderState;
+        if(loaderState){
+            loaderPiston.set_value(false);
+            loaderState=false;
+        }else{
+            loaderPiston.set_value(true);
+            loaderState=true;
+        }
     }*/
     
     if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){

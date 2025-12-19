@@ -38,15 +38,14 @@ void setIntake(){
 void toggleIntake(bool status, double state, int volt){
     if(status){
         if(state==1){
-            lowerIntake.move_voltage(volt*100);
-            upperIntake.move_voltage(127);
+            lowerIntake.move(120);
+            upperIntake.move(volt);
         }else if(state==-1){
-            lowerIntake.move_voltage(-120);
-            upperIntake.move_voltage(-127);
-        }else{
-            //pros::lcd::print(3, ": %f", volt); // 
-            lowerIntake.move_voltage(volt*100);
-            upperIntake.move_voltage(-40);
+            lowerIntake.move(-volt);
+            upperIntake.move(-volt);
+        }else{ 
+            lowerIntake.move(volt);
+            upperIntake.move(-40);
         }
     }else{
         lowerIntake.brake();
