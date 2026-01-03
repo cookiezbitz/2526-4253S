@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "elim left center",
+    "project_name": "right AWP",
     "target": "v5",
     "templates": {
       "LemLib": {
