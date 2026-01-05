@@ -58,7 +58,7 @@ void initialize() {
 	
 	//lemlib::Pose pose = chassis.getPose();
     
-
+/*
 	pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
@@ -70,7 +70,7 @@ void initialize() {
 			//pros::lcd::set_text(1, "Right: " + std::to_string(driveRight.get_position()));
 
 			// print the x, y, and theta values of the pose
-			/*pose = chassis.getPose();
+			pose = chassis.getPose();
 			printf("X: %f, Y: %f, Theta: %f\n", pose.x, pose.y, pose.theta);*/
 			
 			/*pros::lcd::set_text(0, "Left1: "+ std::to_string(left1.get_position()));
@@ -78,7 +78,7 @@ void initialize() {
 			pros::lcd::set_text(2, "Left3: "+ std::to_string(left3.get_position()));
 			pros::lcd::set_text(3, "Right1: "+ std::to_string(right1.get_position()));
 			pros::lcd::set_text(4, "Right2: "+ std::to_string(right2.get_position()));
-			pros::lcd::set_text(5, "Right3: "+ std::to_string(right3.get_position()));*/
+			pros::lcd::set_text(5, "Right3: "+ std::to_string(right3.get_position()));
 			
 
             // delay to save resources
@@ -86,5 +86,5 @@ void initialize() {
         }
     });
 
-	//pros::delay(100);
+	*/
 }

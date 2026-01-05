@@ -2,7 +2,7 @@
 #include "pros/misc.h"
 #include "subsystemHeaders/global.hpp"
 
-bool loaderState = false;
+//bool loaderState = false;
 bool doinkerDown = false;
 
 void setLoader(){
@@ -16,11 +16,11 @@ void setLoader(){
         }
     }*/
     
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+    /*if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
         loaderPiston.set_value(true);
     }else if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
         loaderPiston.set_value(false);
-    }
+    }*/
 }
 
 void toggleLoader(bool status){

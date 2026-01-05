@@ -83,7 +83,7 @@ void opcontrol(void);
 #include "lemlib/api.hpp" // IWYU pragma: keep
 
 
-//#include <iostream>
+#include <iostream>
 #endif
 
 #endif  // _PROS_MAIN_H_

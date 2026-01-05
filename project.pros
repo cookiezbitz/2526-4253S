@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "right AWP",
+    "project_name": "test",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -316,8 +316,8 @@
     },
     "upload_options": {
       "description": "4253S",
-      "icon": "pros",
-      "slot": 1
+      "icon": "pizza",
+      "slot": 6
     },
     "use_early_access": false
   }

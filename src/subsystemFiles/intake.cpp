@@ -5,13 +5,13 @@
 
 int intakeState = 0;
 
-bool intakePistonStatus = true;
+//bool intakePistonStatus = true;
 void setIntakePiston(){
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // was y
+    /*if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // was y
     //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){ // nelson
         intakePistonStatus = !intakePistonStatus;
         scoringModifier.set_value(intakePistonStatus);
-    }
+    }*/
 }
 
 void setIntake(){
@@ -66,15 +66,15 @@ void toggleIntake(bool status, double state){
             upperIntake.move(-127);
         }else{
             lowerIntake.move(120);
-            upperIntake.move(-40);
+            upperIntake.move(-55); // -40 before
         }
     }else{
         lowerIntake.brake();
         upperIntake.brake();
     }
     
-    //intakeState = state; //
-    intakeState = status;
+    intakeState = state; //
+    //intakeState = status;
 }
 
 void setScoreHeight(bool intakePosition){
