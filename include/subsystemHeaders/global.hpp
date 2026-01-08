@@ -3,6 +3,7 @@
 #include "lemlib/chassis/chassis.hpp"
 #include "pros/adi.hpp"
 #include "pros/colors.hpp"
+#include "pros/distance.hpp"
 #include "pros/imu.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
@@ -34,6 +35,9 @@ extern pros::adi::DigitalOut doubleParkClamp;
 extern pros::adi::DigitalOut wingPiston;
 
 extern pros::Imu inertial;
+
+extern pros::Distance right_distanceSensor;
+extern pros::Distance back_distanceSensor;
 
 extern pros::adi::Led led;
 extern pros::adi::Led led2;

@@ -35,6 +35,9 @@ pros::adi::DigitalOut wingPiston('E');
 
 pros::Imu inertial(17);
 
+pros::Distance right_distanceSensor(20); 
+pros::Distance back_distanceSensor(9); 
+
 pros::Rotation vertPod(19); // vert tracking
 
 //LED 

@@ -5,15 +5,15 @@
 bool loaderState = false;
 bool wingStatus = false;
 bool intakePistonStatus = true;
-void setWing(){
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){ // ivan
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){ // nelson
+void setWing(){ // + loader + intake piston
+    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){ // ivan
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){ // nelson
         wingStatus = !wingStatus;
         wingPiston.set_value(wingStatus);
     }
 
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){  // ivan
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){ // nelson
+    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){  // ivan
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){ // nelson
         if(loaderState){
             loaderPiston.set_value(false);
             loaderState=false;
@@ -23,8 +23,8 @@ void setWing(){
         }
     }
 
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // ivan
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){ // nelson
+    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // ivan
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){ // nelson
         intakePistonStatus = !intakePistonStatus;
         scoringModifier.set_value(intakePistonStatus);
     }
@@ -47,8 +47,8 @@ void setDoublePark(){
 
 void setDrive(){ // use controller input
     int forward = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-    //int turn = -controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)*0.8; // nelson
-    int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X)*0.75; // preston
+    int turn = -controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)*0.8; // nelson
+    //int turn = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X)*0.75; // preston
 
     chassis.arcade(forward,turn);
 

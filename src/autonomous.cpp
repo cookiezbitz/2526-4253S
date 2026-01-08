@@ -59,6 +59,31 @@ void antiJamTask(){
     }
 }
 
+double distanceReset(double wallPosition){
+
+}
+
+double backDistanceSensorOffset = 3.3; // inches from center of robot to distance sensor
+// returns distance to get to goal position, using the BACK distance sensor.
+// use absolute value of coordinates
+double getDistanceTo(double readingPosition, double goalPosition){ // coordinates in inches
+    double distanceRead = back_distanceSensor.get_distance()/25.4; // mm converted to inches
+    // reading pos - current pos = distance read
+    // distance diff = reading pos - goal pos
+    return distanceRead - (readingPosition - goalPosition) + backDistanceSensorOffset;
+    // distance to travel to goal pos = distance read - distance diff + offset of sensor from robot center
+}
+
+double rightDistanceSensorOffset = 4.5; // in 
+// returns distance relative to reading position
+// uses the RIGHT side distance sensor.
+// use absolute value of coordinates
+double getDistanceRelative(double readingPosition){
+    double distanceRead = right_distanceSensor.get_distance()/25.4; // mm converted to inches
+
+    return readingPosition - distanceRead - rightDistanceSensorOffset;
+}
+
 /*void colorSort(){
     while(true){
         if(optical.get_proximity() > 150){
@@ -772,11 +797,11 @@ void rightAuto_AWP_mod(){
 
     // section 1 (initial goal)
 
-    chassis.moveToPoint(47.5 /*48*/,47.5,3000,{.minSpeed=10,.earlyExitRange=0});
+    chassis.moveToPoint(47.5 /*48*/,47.5,3000,{.earlyExitRange=0});
 
     toggleIntake(true,0);
 
-    chassis.turnToHeading(90,1000,{.minSpeed=0,.earlyExitRange=1});
+    chassis.turnToHeading(90,1000,{.earlyExitRange=1});
 
         //controller.clear();
 
@@ -787,7 +812,7 @@ void rightAuto_AWP_mod(){
     chassis.moveToPoint(55+20,47.5,1050,{.maxSpeed=60,.minSpeed=50},true); 
 
     // long goal score
-    chassis.moveToPoint(29.5-3,47.5,1500,{.forwards=false,.maxSpeed=70,.minSpeed=30},true);
+    chassis.moveToPoint(29.5-3,47.5,1500,{.forwards=false,.maxSpeed=60,.minSpeed=30},true);
     chassis.waitUntil(16);
     toggleIntake(true,1);
     toggleLoader(false);
@@ -805,13 +830,13 @@ void rightAuto_AWP_mod(){
     chassis.turnToHeading(180,1000,{.minSpeed=30,.earlyExitRange=10});
     toggleIntake(true,-1); // outtake in case of jam
 
-    chassis.moveToPoint(22+2+2,-22,2000,{.maxSpeed=90,.earlyExitRange=22},true);
+    chassis.moveToPoint(22+1,-22,2000,{.maxSpeed=90,.earlyExitRange=22},true);
     chassis.waitUntil(10);
     toggleIntake(true,1);
     chassis.waitUntil(16);
     toggleIntake(true,0);
 
-    chassis.moveToPoint(22+2+2+2,-24,2000,{.maxSpeed=40,.minSpeed=0,.earlyExitRange=1},true);
+    chassis.moveToPoint(22+1,-24,2000,{.maxSpeed=40,.minSpeed=0,.earlyExitRange=1},true);
 
     chassis.waitUntilDone();
     //toggleLoader(true);
@@ -833,8 +858,8 @@ void rightAuto_AWP_mod(){
     //toggleLoader(true);
 
     // this is left auto unjam strat
-    //chassis.moveToPoint(12,-10,1000,{.forwards=false,.maxSpeed=70,.minSpeed=10},true);
-    chassis.moveToPoint(11,-11,1000,{.forwards=false,.maxSpeed=70,.minSpeed=10},true);
+    //chassis.moveToPoint(11,-11,1000,{.forwards=false,.maxSpeed=70,.minSpeed=10},true);
+    chassis.moveToPoint(7.5,-10,1000,{.forwards=false,.maxSpeed=70,.minSpeed=10},true);
     toggleIntake(false,0);
     chassis.waitUntil(4);
     toggleIntake(true,-1);
@@ -850,7 +875,7 @@ void rightAuto_AWP_mod(){
 
     // section 3 (other goal)
 
-    chassis.moveToPoint(47,-47-1,1100,{.maxSpeed=120,.minSpeed=20,.earlyExitRange=1},true);  // early exit?
+    chassis.moveToPoint(47,-47-1,1100,{.maxSpeed=100,.minSpeed=20,.earlyExitRange=1},true);  // early exit?
     toggleIntake(true,-1);
     //toggleLoader(false);
     chassis.waitUntil(12);
@@ -1222,8 +1247,7 @@ void ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jamming in Q3
 void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jamming in Q3
     chassis.setPose(47.5,16.427,0);
     //chassis.setPose(47,0,0);
-
-    //controller.clear();
+    controller.clear();
 
     // section 1 (initial goal)
 
@@ -1239,11 +1263,6 @@ void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jammi
 
     // into loader
     chassis.moveToPoint(55+10,48,1200+1300,{.maxSpeed=65,.minSpeed=30},false); 
-    //chassis.setPose(chassis.getPose().x,chassis.getPose().y,90);
-   
-    /*chassis.moveToPoint(50,47,250,{.forwards=false,.maxSpeed=80}); // back
-
-    chassis.moveToPoint(55+10,47,1000,{.maxSpeed=80,.minSpeed=30},false); */
 
     // out and other side
 
@@ -1254,27 +1273,28 @@ void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jammi
     toggleIntake(false,0);
 
     //
-    chassis.moveToPoint(30,32,3000,{.forwards=false,.maxSpeed=80});
+    chassis.moveToPoint(30,32+4,3000,{.forwards=false,.maxSpeed=80});
     chassis.turnToHeading(90,1000); // optionally turn here to correct angle, to 270 deg
 
-    chassis.moveToPoint(-47,32,10000,{.forwards=false,.maxSpeed=80});
-    chassis.turnToHeading(0,2000);
+    chassis.moveToPoint(-47,32+4,10000,{.forwards=false,.maxSpeed=80});
+    chassis.turnToHeading(180,2000,{},false);
 
-    /*chassis.moveToPoint(47,34,3000,{.maxSpeed=80});
 
-    chassis.turnToHeading(90,3000);
+    // distance sensor
+    double goalYCoord = chassis.getPose().y + getDistanceTo(70,47.5);
+    controller.print(0,0,
+        "y coord: %.1f",
+        getDistanceTo(70,47.5)
+    );
 
-    chassis.moveToPoint(0,34,5000,{.forwards=false,.maxSpeed=80,.earlyExitRange=12});
-
-    chassis.moveToPoint(-47,34,5000,{.forwards=false,.maxSpeed=80});
-
-    chassis.turnToHeading(180,2000);*/
-
-    chassis.moveToPoint(-47,46,5000,{.maxSpeed=80});
+    chassis.moveToPoint(-47,48,5000,{.forwards=false,.maxSpeed=80});
+    //chassis.moveToPoint(-47,goalYCoord,5000,{.forwards=false,.maxSpeed=80});
 
     chassis.turnToHeading(270,2000);
 
-    chassis.moveToPoint(-25,46,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true); // long goal position
+    chassis.moveToPoint(-25,47.5,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true); // long goal position
+    //chassis.moveToPoint(-25,goalYCoord,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true);
+
 
     chassis.waitUntil(13);
     toggleIntake(true,1);
@@ -1327,6 +1347,24 @@ void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jammi
     chassis.moveToPoint(-40,0,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=24});
 
     chassis.moveToPoint(-40,-47,5000,{.forwards=false,.maxSpeed=80,.earlyExitRange=4});
+    //chassis.moveToPoint(-40,-52,5000,{.forwards=false,.maxSpeed=80,.earlyExitRange=0});
+    // distance reset
+
+    chassis.waitUntilDone();
+    double YCoord_reset = 70 - getDistanceTo(70,47.5);
+
+    controller.print(1,0,
+        "dist: %.1f",
+        getDistanceTo(70,47.5)
+    );
+
+    /*chassis.setPose(chassis.getPose().x,YCoord_reset,chassis.getPose().theta);
+    pros::delay(100);
+
+    chassis.moveToPoint(-40,-47,5000,{.forwards=true,.maxSpeed=80});
+
+    chassis.turnToHeading(270,2000); */
+
 
     chassis.moveToPoint(-40,-70,1500,{.forwards=false,.maxSpeed=60},false); // hit wall
 
@@ -1337,8 +1375,6 @@ void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jammi
 
     chassis.turnToHeading(270,2000);
 
-    /*chassis.moveToPoint(-25,-47,2000,{.forwards=false,.maxSpeed=80,.minSpeed=30},false);
-    chassis.setPose(-28,-47.5,chassis.getPose().theta);*/
 
 
     // load, double load, move to other side
@@ -1362,37 +1398,49 @@ void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jammi
     toggleIntake(false,0);
 
     //
-    chassis.moveToPoint(-30,-32,3000,{.forwards=false,.maxSpeed=80});
+    chassis.moveToPoint(-30,-32-4,3000,{.forwards=false,.maxSpeed=80});
     chassis.turnToHeading(270,1000); // optionally turn here to correct angle, to 270 deg
     
-    chassis.moveToPoint(47-10,-32,10000,{.forwards=false,.maxSpeed=80});
+    chassis.moveToPoint(47-10,-32-4,10000,{.forwards=false,.maxSpeed=80});
     //chassis.turnToHeading(180,2000,{.direction=lemlib::AngularDirection::CCW_COUNTERCLOCKWISE,.minSpeed=10,.earlyExitRange=1},true);
-
-    controller.print(0,0,
-        "T: %.1f",
-        chassis.getPose().theta
-    );
 
     //chassis.waitUntilDone();
     //chassis.cancelAllMotions();
-    chassis.moveToPoint(47,-48,2500,{.forwards=false,.maxSpeed=80,.minSpeed=20,.earlyExitRange=0});
-    pros::delay(2000);
+    chassis.moveToPoint(47,-47,2500,{.forwards=false,.maxSpeed=80,.earlyExitRange=3});
+    pros::delay(1200);
     chassis.cancelMotion();
+    chassis.moveToPoint(47,-52,2000,{.forwards=false,.maxSpeed=80});
+
+    /*chassis.moveToPoint(47,-70,1500,{.forwards=false,.maxSpeed=60},false); // hit wall
+
+    chassis.setPose(chassis.getPose().x,-62.205, chassis.getPose().theta); // reset Y coord on wall
+    pros::delay(100);
+
+    chassis.moveToPoint(47,-47,2000,{.maxSpeed=80});*/
+
+    chassis.turnToHeading(0,2000,{},false);
+    
+    double goalYCoord_3 = fabs(chassis.getPose().y) + getDistanceTo(70,47.5);
+    controller.print(2,0,
+        "y coord: %.1f",
+        getDistanceTo(70,47.5)
+    );
+    
+    chassis.moveToPoint(47,-goalYCoord_3,5000,{.forwards=true,.maxSpeed=80});
 
     /*controller.print(1,0,
         "X: %.2f Y: %.2f T: %.1f",
         chassis.getPose().x,
         chassis.getPose().y,
         chassis.getPose().theta
-    );
-
-    controller.print(2,0,chassis.isInMotion() ? "MOVING" : "STOPPED");*/
+    );*/
 
     chassis.turnToHeading(90,2000);
 
     // score in q4
 
-    chassis.moveToPoint(25,-47.5,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true); // long goal position
+    //chassis.moveToPoint(25,-47.5,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true); // long goal position
+    chassis.moveToPoint(25,-goalYCoord_3,5000,{.forwards=false,.maxSpeed=80,.minSpeed=30},true);
 
         controller.print(0,0,
             "T: %.1f",
@@ -1445,12 +1493,14 @@ void improved_ambitious_skills(){ // starting pose = (47.5,16.427,0); keep jammi
     chassis.turnToHeading(90,2000,{.minSpeed=30,.earlyExitRange=8},false);
     chassis.moveToPoint(62.5,0,8000,{.minSpeed=70},false);*/
 
-    chassis.moveToPoint(63,-18.5,5000,{.minSpeed=60});
-    chassis.turnToHeading(0,2000,{.minSpeed=30,.earlyExitRange=5},true);
+    //chassis.moveToPoint(63,-18.5,5000,{.minSpeed=60});
+    //chassis.turnToHeading(0,2000,{.minSpeed=30,.earlyExitRange=5},true);
+    chassis.moveToPose(60,-18.5,0,5000,{.minSpeed=50},false);
     toggleLoader(true);
-    chassis.moveToPoint(62.5,0,4000,{.minSpeed=70});
+    chassis.moveToPoint(62.5,-4,3000,{.minSpeed=60});
     toggleIntake(true,0);
-    
+    pros::delay(1000);
+    toggleLoader(false);
 }
 
 void rightAuto_UseWing(){ // change match load time? (keeps getting 1 extra other color ball for some rzn)
@@ -1489,11 +1539,11 @@ void rightAuto_UseWing(){ // change match load time? (keeps getting 1 extra othe
     toggleLoader(true);
     pros::delay(200);
 
-    chassis.moveToPoint(55+5,47,1500,{.maxSpeed=80,.minSpeed=40},true); 
+    chassis.moveToPoint(55+5,47,1500,{.maxSpeed=55,.minSpeed=40},true); 
     
     toggleIntake(true, 0);
     chassis.waitUntil(24);
-    pros::delay(650); // adj for 3 blocks??  // cut loader time
+    pros::delay(750); // adj for 3 blocks??  // cut loader time
 
     // score again
     chassis.moveToPoint(29.5-2,47,1500,{.forwards=false,.earlyExitRange=1},true);
@@ -1569,31 +1619,11 @@ void leftAuto_NoCenter(){ //
 }
 
 void test(){
-    chassis.setPose(47,47,0);
-    
-    chassis.moveToPoint(47,47,2000,{.forwards=false,.maxSpeed=80});
-    toggleLoader(false);
+    chassis.setPose(0,0,0);
 
-    chassis.turnToHeading(0,2000);
-    toggleIntake(false,0);
+    chassis.moveToPoint(0,36,3000,{.maxSpeed=80},false);
 
-    //
-    chassis.moveToPoint(30,32,3000,{.forwards=false,.maxSpeed=80});
-    chassis.turnToHeading(90,1000); // optionally turn here to correct angle, to 270 deg
-        controller.print(0,0,
-            "X: %.2f Y: %.2f T: %.1f",
-            chassis.getPose().x,
-            chassis.getPose().y,
-            chassis.getPose().theta
-        );
-    chassis.moveToPoint(-47,32,10000,{.forwards=false,.maxSpeed=80});
-    chassis.turnToHeading(0,2000);
-        controller.print(1,0,
-            "X: %.2f Y: %.2f T: %.1f",
-            chassis.getPose().x,
-            chassis.getPose().y,
-            chassis.getPose().theta
-        );
+    controller.print(0,0,"dist: %.2f", getDistanceTo(70,47.5));
 }
 
 void autonomous() {
@@ -1615,8 +1645,8 @@ void autonomous() {
     //halfField_AWP_skills(); // the good one, also 5
     //slowed_halfField_AWP_skills(); // 5
 
-    //ambitious_skills(); // 6
-    improved_ambitious_skills(); // 6
+        //ambitious_skills(); // 6
+    improved_ambitious_skills(); // 6 WORKS, ~70 pts
 
     // skills(); // 8　for nelson
 
