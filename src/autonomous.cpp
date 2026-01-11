@@ -1618,6 +1618,81 @@ void leftAuto_NoCenter(){ //
     chassis.moveToPoint(15,-38,2000,{.forwards=false,.maxSpeed=90,.minSpeed=0}); // change max speed
 }
 
+void leftAuto_DelayCenter(){
+    chassis.setPose(47.5,-16.427,180);
+
+    // section 1 (initial goal)
+
+    chassis.moveToPoint(47.5,47.5,3000,{.earlyExitRange=0});
+
+    toggleIntake(true,0);
+
+    chassis.turnToHeading(90,1000,{.earlyExitRange=1});
+
+        //controller.clear();
+
+    toggleLoader(true);
+    pros::delay(300);
+
+    // into loader
+    chassis.moveToPoint(55+20,-47.5,1050,{.maxSpeed=60,.minSpeed=50},true); 
+
+    // long goal score
+    chassis.moveToPoint(29.5-3,-47.5,1500,{.forwards=false,.maxSpeed=60,.minSpeed=30},true);
+    chassis.waitUntil(16);
+    toggleIntake(true,1);
+    toggleLoader(false);
+
+    pros::delay(1250+100); // cut extra time
+
+    chassis.setPose(28,-47.25,chassis.getPose().theta); // fake reset
+
+
+    // section 2 (center)
+
+    chassis.moveToPoint(38,-47.25,1000,{.minSpeed=40,.earlyExitRange=2},true);
+
+    chassis.turnToHeading(0,1000,{.minSpeed=30,.earlyExitRange=10});
+    toggleIntake(true,-1); // outtake in case of jam
+
+    chassis.moveToPoint(22+1,-22,2000,{.maxSpeed=90,.earlyExitRange=14},true);
+    toggleIntake(true,0);
+
+    chassis.moveToPoint(22+1,-24,2000,{.maxSpeed=40,.earlyExitRange=1},true);
+
+    chassis.turnToHeading(135,2000,{.earlyExitRange=2});
+
+
+    chassis.moveToPoint(11,-10,1000,{.forwards=false,/*.maxSpeed=60,*/.minSpeed=10},true);
+    toggleIntake(false,0);
+    chassis.waitUntil(4);
+    toggleIntake(true,-1);
+
+    chassis.waitUntil(9); // 10 --> 9
+    toggleIntake(true,1,60);
+
+    chassis.waitUntil(10);
+    setScoreHeight(false);
+    pros::delay(700); // increased time 750 --> 1500 ms
+    toggleIntake(true,1);
+    pros::delay(300);
+    chassis.moveToPoint(11+2,-10-2,500,{.minSpeed=20});
+    chassis.moveToPoint(11-1,-10+1,700,{.minSpeed=30});
+
+
+
+    // 3 descore
+
+    chassis.moveToPoint(40,-34.5,2000,{/*.minSpeed=30,*/.earlyExitRange=0.5},false);
+    chassis.turnToHeading(90,1500,{},false);
+    chassis.waitUntilDone();
+    //chassis.setPose(39,-35,chassis.getPose().theta); // reset
+    
+    chassis.moveToPoint(12,-34.5,2000,{.forwards=false,.maxSpeed=80,.minSpeed=0}); // max speed editable
+    chassis.turnToHeading(135,1000,{},true);
+    toggleIntake(false,0);
+}
+
 void test(){
     chassis.setPose(0,0,0);
 
@@ -1632,8 +1707,11 @@ void autonomous() {
 
     pros::Task antiJam(antiJamTask);
 
+    //elim
+    leftAuto_DelayCenter();
+
     //////leftAuto_AWP(); // 
-    //rightAuto_AWP(); // MAIN ONE, 1 and 5
+    //rightAuto_AWP(); // 1 and 5
     //rightAuto_AWP_mod();
 
     //leftAuto_CenterGoal(); // 2
@@ -1646,7 +1724,7 @@ void autonomous() {
     //slowed_halfField_AWP_skills(); // 5
 
         //ambitious_skills(); // 6
-    improved_ambitious_skills(); // 6 WORKS, ~70 pts
+    //improved_ambitious_skills(); // 6 WORKS, ~70 pts
 
     // skills(); // 8　for nelson
 
