@@ -30,9 +30,11 @@ extern pros::Motor upperIntake;
 
 extern pros::adi::DigitalOut loaderPiston;
 extern pros::adi::DigitalOut scoringModifier;
-extern pros::adi::DigitalOut doublePark;
-extern pros::adi::DigitalOut doubleParkClamp;
+//extern pros::adi::DigitalOut doublePark;
+//extern pros::adi::DigitalOut doubleParkClamp;
 extern pros::adi::DigitalOut wingPiston;
+
+extern pros::adi::DigitalOut lowerIntakeModifier;
 
 extern pros::Imu inertial;
 

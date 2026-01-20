@@ -9,3 +9,5 @@ void toggleIntake(bool status, double state); // auton
 
 // true = high goal, false = mid goal
 void setScoreHeight(bool intakePosition); 
+
+void toggleLowerGoalPiston(bool status);

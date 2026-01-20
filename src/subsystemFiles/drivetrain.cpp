@@ -5,6 +5,7 @@
 bool loaderState = false;
 bool wingStatus = false;
 bool intakePistonStatus = true;
+bool lowerGoalPistonStatus = false;
 void setWing(){ // + loader + intake piston
     //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){ // ivan
     if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){ // nelson
@@ -28,11 +29,16 @@ void setWing(){ // + loader + intake piston
         intakePistonStatus = !intakePistonStatus;
         scoringModifier.set_value(intakePistonStatus);
     }
+
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        lowerGoalPistonStatus = !lowerGoalPistonStatus;
+        lowerIntakeModifier.set_value(lowerGoalPistonStatus);
+    }
 }
 
 bool parkStatus = false;
 bool clampStatus = false;
-void setDoublePark(){
+/*void setDoublePark(){
     if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){ // was x
     //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){ // nelson
         parkStatus = !parkStatus;
@@ -43,7 +49,7 @@ void setDoublePark(){
         clampStatus = !clampStatus;
         doubleParkClamp.set_value(!clampStatus);
     }
-}
+}*/
 
 void setDrive(){ // use controller input
     int forward = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
@@ -53,7 +59,7 @@ void setDrive(){ // use controller input
     chassis.arcade(forward,turn);
 
     setWing();
-    setDoublePark();
+    //setDoublePark();
 }
 
 void toggleWing(bool state){

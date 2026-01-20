@@ -32,8 +32,8 @@ void initialize() {
 	
 	// pneumatics
 	loaderPiston.set_value(false); 
-	doublePark.set_value(false); 
-	doubleParkClamp.set_value(false); 
+	//doublePark.set_value(false); 
+	//doubleParkClamp.set_value(false); 
 	scoringModifier.set_value(true); 
 	wingPiston.set_value(false); 
 
@@ -58,8 +58,8 @@ void initialize() {
 	
 	//lemlib::Pose pose = chassis.getPose();
     
-/*
-	pros::Task screen_task([&]() {
+
+	/*pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
@@ -70,8 +70,7 @@ void initialize() {
 			//pros::lcd::set_text(1, "Right: " + std::to_string(driveRight.get_position()));
 
 			// print the x, y, and theta values of the pose
-			pose = chassis.getPose();
-			printf("X: %f, Y: %f, Theta: %f\n", pose.x, pose.y, pose.theta);*/
+
 			
 			/*pros::lcd::set_text(0, "Left1: "+ std::to_string(left1.get_position()));
 			pros::lcd::set_text(1, "Left2: "+ std::to_string(left2.get_position()));
@@ -84,7 +83,7 @@ void initialize() {
             // delay to save resources
             pros::delay(20);
         }
-    });
+    });*/
 
-	*/
+	
 }

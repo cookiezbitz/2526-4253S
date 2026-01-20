@@ -81,6 +81,9 @@ void setScoreHeight(bool intakePosition){
     scoringModifier.set_value(intakePosition); 
 }
 
+void toggleLowerGoalPiston(bool status){
+    lowerIntakeModifier.set_value(status);
+}
 
 // should remeasure these vals:
 

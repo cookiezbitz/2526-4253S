@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "elim left",
+    "project_name": "interim",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -316,7 +316,7 @@
     },
     "upload_options": {
       "description": "4253S",
-      "icon": "pizza",
+      "icon": "planet",
       "slot": 1
     },
     "use_early_access": false
