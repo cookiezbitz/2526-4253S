@@ -15,13 +15,13 @@ bool intakeSlowed = false;
 
 // motor ports + radio port ___
 pros::MotorGroup driveLeft({-2, -4, -8}, pros::MotorGearset::blue); // left motor group (reversed)
-pros::MotorGroup driveRight({3, 18, 6}, pros::MotorGearset::blue); // right motor group (normal)
+pros::MotorGroup driveRight({21, 18, 6}, pros::MotorGearset::blue); // right motor group (normal)
 
 // for debugging
 pros::Motor left1(-2, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor left2(-4, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor left3(-8, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
-pros::Motor right1(3, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
+pros::Motor right1(21, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor right2(18, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);     
 pros::Motor right3(6, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 

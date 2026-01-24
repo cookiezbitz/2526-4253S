@@ -29,6 +29,9 @@ void initialize() {
 	
 	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD); //
+
+	lowerIntake.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
+	upperIntake.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 	
 	// pneumatics
 	loaderPiston.set_value(false); 
