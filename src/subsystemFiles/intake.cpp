@@ -6,6 +6,8 @@
 int intakeState = 0;
 
 //bool intakePistonStatus = true;
+bool lowerScoringToggled = false;
+int lowerScoringTimer = 0;
 void setIntakePiston(){
     /*if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // was y
     //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){ // nelson
@@ -28,9 +30,26 @@ void setIntake(){
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)/*||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)*/){
         lowerIntake.move(-127);
         upperIntake.move(-127);
+    // L2: weak lower goal
+    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+        lowerIntake.move(-80);
+        upperIntake.move(-80);
+        if(lowerScoringToggled==false){
+            lowerIntakeModifier.set_value(true);
+            lowerScoringToggled = true;
+        }
     }else{
         lowerIntake.brake();
         upperIntake.brake();
+        
+        if(lowerScoringToggled){
+            lowerScoringTimer += 15;
+            if(lowerScoringTimer >= 500){
+                lowerIntakeModifier.set_value(false);
+                lowerScoringToggled = false;
+                lowerScoringTimer = 0;
+            }
+        }
     }
     setIntakePiston();
 }
