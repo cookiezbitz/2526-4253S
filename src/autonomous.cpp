@@ -11,7 +11,7 @@
 int delayTask = 190;
 int delayIntake = 200;
 
-void colorIsBlue(bool blue){
+/*void colorIsBlue(bool blue){
     if(blue){
         led.set_all(0X0000FF); // blue = 0X0000FF red = 0XFF0000
         led2.set_all(0X0000FF);
@@ -24,7 +24,7 @@ void colorIsBlue(bool blue){
         led2.update();
     }
     
-}
+}*/
 
 void antiJamTask(){
     int stallCounter = 0; // ms
@@ -1787,12 +1787,12 @@ void leftAuto_DelayCenter(){
 
     // 2nd segment
 
-    chassis.moveToPoint(48,-47-1,2400,{.minSpeed=10,.earlyExitRange=1},true); 
+    chassis.moveToPoint(48,-48,2400,{.minSpeed=10,.earlyExitRange=0.5},true); 
     
     chassis.turnToHeading(90,1000,{.maxSpeed=80,.minSpeed=10,.earlyExitRange=1},false);
 
     // long goal first
-    chassis.moveToPoint(29.5-2,-47,1300,{.forwards=false,.maxSpeed=80,.minSpeed=40,.earlyExitRange=1},true);
+    chassis.moveToPoint(29.5-2,-47-1,1300,{.forwards=false,.maxSpeed=80,.minSpeed=40,.earlyExitRange=1},true);
     chassis.waitUntil(20);
     toggleIntake(true,1); // score; might jam 
 
@@ -1803,7 +1803,7 @@ void leftAuto_DelayCenter(){
     // into loader
     chassis.moveToPoint(47,-47,1000,{.maxSpeed=80,.minSpeed=40,.earlyExitRange=2},true);
     //chassis.moveToPoint(55+4,-47+1,1200,{.maxSpeed=70,.minSpeed=40},true); 
-    chassis.moveToPoint(55+10,-47,800,{.maxSpeed=50,.minSpeed=30},true); 
+    chassis.moveToPoint(55+10,-47,800+200,{.maxSpeed=50,.minSpeed=30},true); 
     toggleIntake(true, 0);
     //pros::delay(1000-250); // sub 1 sec
 
@@ -1947,12 +1947,14 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     chassis.waitUntil(10);
     toggleIntake(true,1);
     pros::delay(1000);
+    toggleLoader(false);
     //toggleIntake(true,-1);
     //pros::delay(200);
     toggleIntake(true,1);
     pros::delay(900);
     chassis.setPose(-29.5,-47.5,chassis.getPose().theta);
     pros::delay(100);
+    toggleLoader(true);
 
     // LOADER
     chassis.moveToPoint(-47,-47,3000,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=2});
@@ -1964,7 +1966,7 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
 
 
     chassis.moveToPoint(-40,-47,2000,{.forwards=false,.maxSpeed=80,.minSpeed=20});
-    chassis.moveToPoint(-27,-47.5,3000,{.forwards=false,.maxSpeed=80,.minSpeed=30});
+    chassis.moveToPoint(-27,-47.5,2000,{.forwards=false,.maxSpeed=80,.minSpeed=30});
     
     chassis.waitUntil(10-2);
     toggleIntake(true,1);
@@ -1972,7 +1974,7 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     //toggleIntake(true,-1);
     //pros::delay(200);
     toggleIntake(true,1);
-    pros::delay(600-200);
+    pros::delay(900);
     chassis.setPose(-29.5,-47.5,chassis.getPose().theta);
     pros::delay(100);
 
@@ -1991,14 +1993,24 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     chassis.moveToPose(-62-1-1,-18.5,350,5000,{.minSpeed=50,.earlyExitRange=4},false);
 
 
-    pros::delay(500);
+    /*pros::delay(500);
     chassis.moveToPoint(-62-1-1-1-1+1,-4,1200,{.maxSpeed=60,.minSpeed=50});
     toggleIntake(true,0);
     
     chassis.moveToPoint(-62-1-1-1,12+10+6-6,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
 
     chassis.moveToPoint(-62-1,12+10+6-6,600,{.maxSpeed=100,.minSpeed=30},true);
+    toggleLoader(true);*/
+    chassis.moveToPoint(-62-1-1-1-1+1,-4,500,{.maxSpeed=50,.minSpeed=50});
+    toggleIntake(true,0);
+    
+    chassis.moveToPoint(-62-1-1-1,12+10+6-6,500,{.maxSpeed=40,.minSpeed=40});
+
+    chassis.moveToPoint(-62-1-1-1,12+10+6-6,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
+
+    chassis.moveToPoint(-62-1,12+10+6-6,600,{.maxSpeed=100,.minSpeed=30},true);
     toggleLoader(true);
+
 
     // to reset
     chassis.moveToPoint(-62-1,0,1000,{.forwards=false,.maxSpeed=40,.minSpeed=30});
@@ -2067,14 +2079,15 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     
     pros::delay(100);
 
-    chassis.moveToPoint(-7-1,7+1,500,{.forwards=false,.maxSpeed=30,.minSpeed=10-10});
+    //
+    chassis.moveToPoint(-7-1.5,7+1.5,500,{.forwards=false,.maxSpeed=30,.minSpeed=10-10});
 
     pros::delay(700-100);
 
-    lowerIntake.move(-60);
+    /*lowerIntake.move(-60);
     upperIntake.move(-60);
     
-    pros::delay(200+100);
+    pros::delay(200+100);*/
 
     lowerIntake.move(120-30);
     upperIntake.move(120-30);
@@ -2101,13 +2114,13 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     
     chassis.cancelMotion();
     setScoreHeight(true);
-    chassis.moveToPoint(-7-1,7+1,500,{.forwards=false,.maxSpeed=30,.minSpeed=10});
+    chassis.moveToPoint(-7-2,7+2,500,{.forwards=false,.maxSpeed=30,.minSpeed=10});
     
 
-    chassis.moveToPoint(-48,47-1-1,3000,{.maxSpeed=40});
+    chassis.moveToPoint(-48,47-1,3000,{.maxSpeed=40});
     chassis.waitUntil(5);
     chassis.cancelMotion();
-    chassis.moveToPoint(-48,47-1-1,3000,{.maxSpeed=120,.earlyExitRange=1.5});
+    chassis.moveToPoint(-48,47-1,3000,{.maxSpeed=120,.earlyExitRange=1.5});
     chassis.waitUntil(5);
     //setScoreHeight(true);
     toggleIntake(true,1);
@@ -2124,7 +2137,7 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     toggleIntake(true, 0);
     chassis.waitUntilDone();
     pros::delay(750-250);
-    chassis.moveToPoint(-55-10,47-1+1,250,{.maxSpeed=40,.minSpeed=30},true);
+    chassis.moveToPoint(-55-10,47-1+1,250+500,{.maxSpeed=40,.minSpeed=30},true);
     
     chassis.moveToPoint(-47,47,2000,{.forwards=false,.maxSpeed=80});
 
@@ -2138,7 +2151,7 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     /*chassis.moveToPose(-30,60,270,3000,
         {.forwards=false,.maxSpeed=80+20,.minSpeed=40,.earlyExitRange=2});*/ // ALT LOGIC
 
-    chassis.moveToPoint(40,60,6000,{.forwards=false,.maxSpeed=80,.minSpeed=15,.earlyExitRange=2});
+    chassis.moveToPoint(40,60+2,6000,{.forwards=false,.maxSpeed=80,.minSpeed=15,.earlyExitRange=2});
     chassis.turnToHeading(180,2000,{},false);
     toggleIntake(false,0);
     // reset
@@ -2196,7 +2209,7 @@ void ambitious_vto_skills(){ // double check starting and reset poses : (38.5+8,
     pros::delay(400);
     chassis.cancelMotion();
     chassis.moveToPoint(62.5+1+1,0-2,3000,{.minSpeed=40});
-    pros::delay(1200+200);
+    pros::delay(1200+200-200);
     chassis.cancelMotion();
     toggleLoader(false);
 }
@@ -2207,12 +2220,13 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
     chassis.setPose(64,18.5,180);
 
     pros::delay(500);
-    chassis.moveToPoint(65,4,1200,{.maxSpeed=60,.minSpeed=50});
+    chassis.moveToPoint(65,4,1200,{.maxSpeed=60-10,.minSpeed=50});
     toggleIntake(true,0);
     
-    chassis.moveToPoint(65,-22,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
+    chassis.moveToPoint(65,-22-4,500,{.maxSpeed=40,.minSpeed=40});
+    chassis.moveToPoint(65,-22-4,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
 
-    chassis.moveToPoint(63,-22,600,{.maxSpeed=100,.minSpeed=30},true);
+    chassis.moveToPoint(63,-22-4,600,{.maxSpeed=100,.minSpeed=30},true);
     toggleLoader(true);
 
     // to reset
@@ -2228,16 +2242,18 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
     toggleLoader(false);
 
     // pick up blue block
-    chassis.moveToPoint(48,-22-4,2000,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=5});
+    chassis.moveToPoint(48,-26,2000,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=5});
     chassis.turnToHeading(270,1000,{.minSpeed=20},false);
     chassis.waitUntilDone();
     
-    //double currentXCoord = getRearOffset(70);
-    double currentXCoord = getRearOffset(70.5);
+    double currentXCoord = getRearOffset(70);
+    //double currentXCoord = getRearOffset(70.5);
     chassis.setPose(currentXCoord,chassis.getPose().y,chassis.getPose().theta); // reset X
 
     // center goal
-    chassis.moveToPoint(24+2,-24-2,3000,{.maxSpeed=80,.minSpeed=10},true);
+    //chassis.moveToPoint(26,-26,3000,{.maxSpeed=80,.minSpeed=10},true);
+    chassis.moveToPoint(26,-26,3000,{.maxSpeed=80,.minSpeed=40,.earlyExitRange=8},true);
+    chassis.moveToPoint(26,-26,3000,{.maxSpeed=30,.minSpeed=10},true);
 
 
     chassis.turnToHeading(135,2000,{.minSpeed=10,.earlyExitRange=2});
@@ -2275,27 +2291,29 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
     
     pros::delay(100);
 
-    chassis.moveToPoint(6+1,-6-1,500,{.forwards=false,.maxSpeed=30,.minSpeed=00});
+    //chassis.moveToPoint(6+1,-6-1,500,{.forwards=false,.maxSpeed=30,.minSpeed=00});
+    //chassis.moveToPoint(9.5,-9.5,500,{.forwards=false,.maxSpeed=30});
+    chassis.moveToPoint(7+1,-7-1,500,{.forwards=false,.maxSpeed=30,.minSpeed=10});
 
     pros::delay(500);
 
     // unjam
-    lowerIntake.move(-60);
+    /*lowerIntake.move(-60);
     upperIntake.move(-60);
     
-    pros::delay(200+100);
+    pros::delay(200+100);*/
 
     lowerIntake.move(120-30);
     upperIntake.move(120-30);
     pros::delay(300+200);
     //toggleIntake(true,0);
-    lowerIntake.move(90);
+    //lowerIntake.move(90);
     upperIntake.move(-70);
 
     pros::delay(800);
-    /*lowerIntake.move(-60);
+    lowerIntake.move(-60);
     upperIntake.move(-60);
-    pros::delay(200);*/
+    pros::delay(200);
     toggleIntake(true,0);
     //lowerIntake.move(90);
 
@@ -2307,7 +2325,7 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
     
     chassis.cancelMotion();
     setScoreHeight(true);
-    chassis.moveToPoint(7,-7,500,{.forwards=false,.maxSpeed=30,.minSpeed=10});
+    chassis.moveToPoint(7+1,-7-1,500,{.forwards=false,.maxSpeed=30,.minSpeed=10});
     
     // Q4 LOADER
     chassis.moveToPoint(48,-48,3000,{.maxSpeed=40});
@@ -2395,27 +2413,37 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
 
 
     // clear park (face 0º)
-    
+  
     chassis.moveToPoint(-43,-47,2000,{.minSpeed=30,.earlyExitRange=2});
     toggleLoader(false);
-    toggleIntake(true,1);
-
-    chassis.moveToPose(-64,-18.5,350,5000,{.minSpeed=50,.earlyExitRange=4},false);
+    //toggleIntake(true,1);
 
 
-    pros::delay(500);
-    chassis.moveToPoint(-65,-4,1200,{.maxSpeed=60,.minSpeed=50});
+    chassis.moveToPose(-62-1-1,-18.5,350,5000,{.minSpeed=50,.earlyExitRange=4},false);
+
+
+
+
+    //pros::delay(500);
+    chassis.moveToPoint(-62-1-1-1-1+1,-4,500,{.maxSpeed=50,.minSpeed=50});
+    //chassis.moveToPoint(-62-1-1-1-1+1,-4,1200,{.maxSpeed=40,.minSpeed=40});
     toggleIntake(true,0);
-    
-    chassis.moveToPoint(-65,12+10+6-6,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
 
-    chassis.moveToPoint(-63,12+10+6-6,600,{.maxSpeed=100,.minSpeed=30},true);
+    chassis.moveToPoint(-62-1-1-1,12+10+6-6,500,{.maxSpeed=40,.minSpeed=40});
+
+
+    chassis.moveToPoint(-62-1-1-1,12+10+6-6,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
+
+
+    chassis.moveToPoint(-62-1,12+10+6-6,600,{.maxSpeed=100,.minSpeed=30},true);
     toggleLoader(true);
 
-    // to reset
-    chassis.moveToPoint(-63,0,1000,{.forwards=false,.maxSpeed=40,.minSpeed=30});
 
-    // parking = 18.87 in, 1 in tall; 
+    // to reset
+    chassis.moveToPoint(-62-1,0,1000,{.forwards=false,.maxSpeed=40,.minSpeed=30});
+
+
+    // parking = 18.87 in, 1 in tall;
     // should intersect wheels at 2.35 in from the center
     // wheel center is 5 holes or 2.5 in --> 2.25 in from the edge of the bot
     
@@ -2436,7 +2464,7 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
     chassis.turnToHeading(270,2000,{.minSpeed=20,.earlyExitRange=5});
     setScoreHeight(true);
 
-    chassis.moveToPoint(-27,47.5,3000,{.forwards=false,.maxSpeed=80+40,.minSpeed=30});
+    chassis.moveToPoint(-27,47.5,3000,{.forwards=false,.maxSpeed=100,.minSpeed=30});
     chassis.waitUntil(10);
     toggleIntake(true,1);
     pros::delay(1800-200);
@@ -2537,26 +2565,158 @@ void ultrasuperveryambitious_vto_skills(){ // assumes perfect 6 block collection
 }
 
 void test(){
-    //chassis.setPose(-29.5,-47.5,270);
-    chassis.setPose(29.5,47.5,90);
+    chassis.setPose(-29.5,-47.5,270);
 
-   // chassis.moveToPoint(-29.5,-47.5,500,{.forwards=false,.maxSpeed=80,.minSpeed=40},true);
-
-
-    // PARK
-    chassis.moveToPoint(40+4,47,2000,{.minSpeed=30,.earlyExitRange=2});
-
-    chassis.moveToPose(64,18.5-2,175,5000,{.minSpeed=70},false);
-    toggleLoader(true);
-    pros::delay(100);
-    chassis.moveToPoint(62.5+1+1.5,0-4,3000,{.minSpeed=60});
-    toggleIntake(true,0+1);
-    pros::delay(400);
-    chassis.cancelMotion();
-    chassis.moveToPoint(62.5+1+1,0-2,3000,{.minSpeed=40});
-    pros::delay(1200+200);
-    chassis.cancelMotion();
+    // clear park (face 0º)
+    
+    chassis.moveToPoint(-43,-47,2000,{.minSpeed=30,.earlyExitRange=2});
     toggleLoader(false);
+    //toggleIntake(true,1);
+
+    chassis.moveToPose(-62-1-1,-18.5,350,5000,{.minSpeed=50,.earlyExitRange=4},false);
+
+
+    //pros::delay(500);
+    chassis.moveToPoint(-62-1-1-1-1+1,-4,500,{.maxSpeed=50,.minSpeed=50});
+    //chassis.moveToPoint(-62-1-1-1-1+1,-4,1200,{.maxSpeed=40,.minSpeed=40});
+    toggleIntake(true,0);
+    
+
+    chassis.moveToPoint(-62-1-1-1,12+10+6-6,500,{.maxSpeed=40,.minSpeed=40});
+
+    chassis.moveToPoint(-62-1-1-1,12+10+6-6,1500,{.maxSpeed=60,.minSpeed=40,.earlyExitRange=2.5});
+
+    chassis.moveToPoint(-62-1,12+10+6-6,600,{.maxSpeed=100,.minSpeed=30},true);
+    toggleLoader(true);
+
+    // to reset
+    chassis.moveToPoint(-62-1,0,1000,{.forwards=false,.maxSpeed=40,.minSpeed=30});
+
+    // parking = 18.87 in, 1 in tall; 
+    // should intersect wheels at 2.35 in from the center
+    // wheel center is 5 holes or 2.5 in --> 2.25 in from the edge of the bot
+    
+    chassis.waitUntilDone();
+    chassis.setPose(-62,16.5,chassis.getPose().theta); // measured reset
+
+    chassis.moveToPoint(-48,22,2000,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=5});
+    chassis.turnToHeading(90,1000,{.minSpeed=20},false);
+    chassis.waitUntilDone();
+    
+    double currentXCoord = getRearOffset(70);
+    chassis.setPose(-currentXCoord,chassis.getPose().y,chassis.getPose().theta); // reset X
+    pros::delay(100);
+    
+
+    // score center
+
+    chassis.moveToPoint(-22-4,22-2,1500,{.maxSpeed=80,.minSpeed=20+20,.earlyExitRange=8},true);
+    toggleLoader(false);
+    toggleIntake(true,0);
+
+    chassis.moveToPoint(-22-4,22-2,1300,{.maxSpeed=30,.minSpeed=5},true);
+    chassis.waitUntil(5);
+    toggleIntake(false,0);
+
+    chassis.moveToPoint(-22,22,1000,{.minSpeed=50,.earlyExitRange=1});
+
+                        
+    chassis.turnToHeading(315,2000,{.minSpeed=10,.earlyExitRange=2});
+    chassis.waitUntil(50);
+    toggleIntake(true,0);
+    upperIntake.move(-70);
+    
+    // CENTER LOGIC
+    chassis.moveToPoint(-8,8,1500,{.forwards=false,.maxSpeed=80,.minSpeed=20},true);
+
+    toggleLoader(true);
+    
+    chassis.waitUntil(4);
+    chassis.cancelMotion();
+
+    chassis.moveToPoint(-7+1,7-1,1200,{.forwards=false,.maxSpeed=40,.minSpeed=15});
+ 
+    toggleIntake(false,0);
+
+    chassis.waitUntil(7);
+    toggleIntake(true,-1);
+ 
+    chassis.waitUntil(9); // 10 --> 9
+
+    lowerIntake.move(120-30);
+    upperIntake.move(120-30);
+    setScoreHeight(false);
+    pros::delay(300);
+    lowerIntake.move(90);
+    upperIntake.move(-50);
+
+    chassis.moveToPoint(chassis.getPose().x-48,chassis.getPose().y+48,3000,{.maxSpeed=30});
+    chassis.waitUntil(0.5);
+    chassis.cancelMotion();
+    
+    pros::delay(100);
+
+    //
+    chassis.moveToPoint(-7-1.5,7+1.5,500,{.forwards=false,.maxSpeed=30,.minSpeed=10-10});
+
+    pros::delay(700-100);
+
+    /*lowerIntake.move(-60);
+    upperIntake.move(-60);
+    
+    pros::delay(200+100);*/
+
+    lowerIntake.move(120-30);
+    upperIntake.move(120-30);
+    pros::delay(300+200);
+    //lowerIntake.move(90);
+    //upperIntake.move(-80);
+    toggleIntake(true,0);
+    upperIntake.move(-70);
+
+    pros::delay(700);
+    lowerIntake.move(-60);
+    upperIntake.move(-60);
+    pros::delay(200);
+    toggleIntake(true,0);
+
+    pros::delay(1000);
+
+    // score
+
+
+    // Q2 LOADER
+    chassis.moveToPoint(chassis.getPose().x-48,chassis.getPose().y+48,3000,{.maxSpeed=30});
+    chassis.waitUntil(1.5);
+    
+    chassis.cancelMotion();
+    setScoreHeight(true);
+    chassis.moveToPoint(-7-2,7+2,500,{.forwards=false,.maxSpeed=30,.minSpeed=10});
+    
+
+    chassis.moveToPoint(-48,47-1-1,3000,{.maxSpeed=40});
+    chassis.waitUntil(5);
+    chassis.cancelMotion();
+    chassis.moveToPoint(-48,47-1-1,3000,{.maxSpeed=120,.earlyExitRange=1.5});
+    chassis.waitUntil(5);
+    //setScoreHeight(true);
+    toggleIntake(true,1);
+}
+
+void test1(){
+    chassis.setPose(64,18.5,180);
+
+    pros::delay(500);
+    chassis.moveToPoint(65,4,1200,{.maxSpeed=60,.minSpeed=50});
+    toggleIntake(true,0);
+    
+    chassis.moveToPoint(65,-22-4,1500,{.maxSpeed=60+20,.minSpeed=40,.earlyExitRange=2.5});
+
+    chassis.moveToPoint(63,-22-4,600,{.maxSpeed=100,.minSpeed=30},true);
+    toggleLoader(true);
+
+    // to reset
+    chassis.moveToPoint(63,0,1000,{.forwards=false,.maxSpeed=40,.minSpeed=30});
 }
 
 void autonomous() {
@@ -2574,7 +2734,7 @@ void autonomous() {
     //leftAuto_DelayCenter(); // 4
     
     // 5 thru 7
-    //rightAuto_LowerGoal();  // 5
+    //rightAuto_LowerGoal();  // 5 <-- can make movement to match loader faster/early exit a bit
     //rightAuto_UseWing(); // 6
     //rightAuto_DelayLowerGoal(); // 7 highkenuinely better than lower goal first
 

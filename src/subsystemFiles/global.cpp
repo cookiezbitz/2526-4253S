@@ -28,7 +28,7 @@ pros::Motor right3(6, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees
 pros::Motor lowerIntake(10, pros::MotorGearset::blue, pros::MotorEncoderUnits::degrees);
 pros::Motor upperIntake(7, pros::MotorGearset::green, pros::MotorEncoderUnits::degrees);
 
-pros::adi::DigitalOut loaderPiston('B');
+pros::adi::DigitalOut loaderPiston('G');
 pros::adi::DigitalOut scoringModifier('F'); 
 //pros::adi::DigitalOut doublePark('D'); 
 //pros::adi::DigitalOut doubleParkClamp('C');
@@ -44,8 +44,8 @@ pros::Distance back_distanceSensor(9);
 pros::Rotation vertPod(16); // vert tracking
 
 //LED 
-pros::adi::Led led('H',17);
-pros::adi::Led led2('B',17); // WIRE
+//pros::adi::Led led('H',17);
+//pros::adi::Led led2('B',17); // WIRE
 
 lemlib::TrackingWheel verticalEncoder(&vertPod, 2.0*(48.0/47.6)*(24.0/23.5)/**(24.25/24.0)*(24.5/24.0)*(24.5/24.0)*/,-0.75); // need to edit
 

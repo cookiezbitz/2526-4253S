@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/misc.h"
 #include "pros/rtos.hpp"
 #include "subsystemHeaders/global.hpp"
 #include <bit>
@@ -87,7 +88,6 @@ void opcontrol() {
 
 		//controller.print(0, 0, "R: %.2f", right_distanceSensor.get_distance()/25.4); // mm to inches
 		//controller.print(0, 0, "B: %.2f", back_distanceSensor.get_distance()/25.4); // mm to inches
-		
 		
 		pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
         pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
