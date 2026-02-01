@@ -110,3 +110,7 @@ void toggleLowerGoalPiston(bool status){
 // HUE:
 // red [0,~20]
 // blue [180,210]
+
+void setIntakeState(int state){
+    intakeState = state;
+}

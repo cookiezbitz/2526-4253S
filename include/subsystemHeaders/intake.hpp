@@ -11,3 +11,5 @@ void toggleIntake(bool status, double state); // auton
 void setScoreHeight(bool intakePosition); 
 
 void toggleLowerGoalPiston(bool status);
+
+void setIntakeState(int state);
