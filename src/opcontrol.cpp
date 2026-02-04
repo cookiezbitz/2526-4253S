@@ -83,6 +83,7 @@ void opcontrol() {
 	//chassis.setPose(38.5+8,(4+13.625/2.0),270);
 	//pros::Task intakePistonRumble(intakePistonIndicator, "Intake Piston Rumble");
 	//intakePistonRumble.resume();
+	chassis.setPose(38.5+8,-(4+13.625/2.0),270);
 	
 	while (true) {
 
