@@ -4078,12 +4078,12 @@ void elim_LeftAuto_DelayCenter(){
 
     // 2nd segment
 
-    chassis.moveToPoint(48-10,-47,2000,{.minSpeed=10,.earlyExitRange=0.5},true); 
+    chassis.moveToPoint(48-10,-47-1,2000,{.minSpeed=10,.earlyExitRange=0},true); 
     
     chassis.turnToHeading(90,1000,{.maxSpeed=80,.minSpeed=10,.earlyExitRange=0},false);
 
     // long goal first
-    chassis.moveToPoint(29.5-2,-47.5,1300,{.forwards=false,.maxSpeed=80,.minSpeed=40,.earlyExitRange=1},true);
+    chassis.moveToPoint(29.5-2,-47.5-0.5,1300,{.forwards=false,.maxSpeed=80,.minSpeed=40,.earlyExitRange=1},true);
     chassis.waitUntil(20-10-2);
     toggleIntake(true,1); // score; might jam 
 
@@ -4223,7 +4223,7 @@ void elim_LeftAuto_NoCenter(){ //
     //pros::delay(1000); // adj for 3 blocks??  // cut loader time
 
     // score again
-    chassis.moveToPoint(29.5-2,-47.5,1500,{.forwards=false,.earlyExitRange=1},true);
+    chassis.moveToPoint(29.5-2,-47,1500,{.forwards=false,.earlyExitRange=1},true);
     chassis.waitUntil(20);
     toggleIntake(true,1); // score 
     toggleLoader(false);  
