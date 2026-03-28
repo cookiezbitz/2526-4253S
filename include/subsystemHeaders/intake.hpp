@@ -1,6 +1,9 @@
 //#include "main.h"
 
 extern int intakeState;
+extern bool centerDescoreStatus;
+extern bool hoodPistonStatus;
+extern bool middleGoalMacroTriggered;
 
 void setIntake(); // button control
 

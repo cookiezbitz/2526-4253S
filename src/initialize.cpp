@@ -27,24 +27,24 @@ void initialize() {
 	driveLeft.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	driveRight.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
 	
-	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD); //
+	lowerIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	upperIntake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST); //
 
 	lowerIntake.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 	upperIntake.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
 	
 	// pneumatics
 	loaderPiston.set_value(false); 
-	//doublePark.set_value(false); 
-	//doubleParkClamp.set_value(false); 
-	scoringModifier.set_value(true); 
+	centerDescore.set_value(false); 
 	wingPiston.set_value(false); 
+	hoodPiston.set_value(true);
 
 	//
 
 	inertial.reset();
 	inertial.tare_heading();
 
+	intake_optical.set_led_pwm(50);
 
 	// reset and encoders
 	vertPod.reset_position();

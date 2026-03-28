@@ -4,16 +4,13 @@
 
 bool loaderState = false;
 bool wingStatus = false;
-bool intakePistonStatus = true;
-bool lowerGoalPistonStatus = false;
-void setWing(){ // + loader + intake piston
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){ // ivan
+
+void setPistons(){ // + loader + intake piston
     if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){ // nelson
         wingStatus = !wingStatus;
         wingPiston.set_value(wingStatus);
     }
 
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){  // ivan
     if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){ // nelson
         if(loaderState){
             loaderPiston.set_value(false);
@@ -21,18 +18,12 @@ void setWing(){ // + loader + intake piston
         }else{
             loaderPiston.set_value(true);
             loaderState=true;
+
+            if(centerDescoreStatus == true){
+                centerDescore.set_value(false);
+                centerDescoreStatus = false;
+            }
         }
-    }
-
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // ivan
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){ // nelson
-        intakePistonStatus = !intakePistonStatus;
-        scoringModifier.set_value(intakePistonStatus);
-    }
-
-    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-        lowerGoalPistonStatus = !lowerGoalPistonStatus;
-        lowerIntakeModifier.set_value(lowerGoalPistonStatus);
     }
 }
 
@@ -58,7 +49,7 @@ void setDrive(){ // use controller input
 
     chassis.arcade(forward,turn);
 
-    setWing();
+    setPistons();
     //setDoublePark();
 }
 

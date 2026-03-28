@@ -1,6 +1,6 @@
 //#include "main.h"
 
-extern bool intakePistonStatus;
+extern bool loaderState;
 
 double getAverageEncoderVal();
 

@@ -51,17 +51,6 @@ void driverColorSort(){
 }
 */
 
-void intakePistonIndicator(){
-	controller.clear();
-	while(true){
-		if(intakePistonStatus==false){
-			controller.rumble("- .");
-			controller.print(1,1,"rumbling");
-		}
-		pros::Task::delay(1000);
-	}
-}
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -78,13 +67,21 @@ void intakePistonIndicator(){
 
 int count = 0;
 
+void intake(){
+	while(true){
+		setIntake();
+		
+		pros::Task::delay(15);
+	}
+}
+
 void opcontrol() {
 	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
 	//chassis.setPose(38.5+8,(4+13.625/2.0),270);
 	//pros::Task intakePistonRumble(intakePistonIndicator, "Intake Piston Rumble");
 	//intakePistonRumble.resume();
-	chassis.setPose(38.5+8,-(4+13.625/2.0),270);
-	
+	//chassis.setPose(38.5+8,-(4+13.625/2.0),270);
+	pros::Task intakeTask(intake, "Intake Task");
 	while (true) {
 
 		//controller.print(0, 0, "R: %.2f", right_distanceSensor.get_distance()/25.4); // mm to inches
@@ -93,7 +90,7 @@ void opcontrol() {
 		pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
         pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
         pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading 
-		
+
 
 		//pros::lcd::print(3, "lower: %f", lowerIntake.get_actual_velocity()); // act of lower intake
 		//pros::lcd::print(4, "upper: %f", upperIntake.get_actual_velocity()); // act of upper intake
@@ -109,21 +106,21 @@ void opcontrol() {
         pros::lcd::print(5, "left 3: %f  right 3: %f", left3.get_temperature(), right3.get_temperature()); //  
 
 		pros::lcd::print(6, "lower intake: %f", lowerIntake.get_temperature()); // 
-        pros::lcd::print(7, "upper intake: %f", upperIntake.get_temperature()); // 
+        pros::lcd::print(7, "upper intake: %f", upperIntake.get_temperature()); 
 
 		// */
 		
-		if (count % 300 == 0 && intakePistonStatus == false) {
-	    	// Only send every 300ms
-	    	controller.rumble("- .");
-			//controller.print(0, 0, "B: %.f", count); // mm to inches
-	   	}
-		
+		/*if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_X)){
+			chassis.setPose(0,0,0);
+			chassis.moveToPoint(0,12,2000);
+			pros::delay(1000);
+			pose_chassis.moveToPose(-24,24,270,5000);
+		}*/
 		setDrive();
-		setIntake();
-		setLoader();
+		//setIntake();
+		//setLoader();
 
-		count+=15;
+		//count+=15;
 		pros::delay(15);
 	}
 }

@@ -25,21 +25,20 @@ extern pros::Motor right1;
 extern pros::Motor right2;
 extern pros::Motor right3;
 
-extern pros::Motor lowerIntake;
+extern pros::MotorGroup lowerIntake;
 extern pros::Motor upperIntake;
 
 extern pros::adi::DigitalOut loaderPiston;
-extern pros::adi::DigitalOut scoringModifier;
-//extern pros::adi::DigitalOut doublePark;
-//extern pros::adi::DigitalOut doubleParkClamp;
+extern pros::adi::DigitalOut centerDescore;
 extern pros::adi::DigitalOut wingPiston;
-
-extern pros::adi::DigitalOut lowerIntakeModifier;
+extern pros::adi::DigitalOut hoodPiston;
 
 extern pros::Imu inertial;
 
 extern pros::Distance right_distanceSensor;
 extern pros::Distance back_distanceSensor;
+extern pros::Distance front_distanceSensor;
+extern pros::Optical intake_optical;
 
 extern pros::adi::Led led;
 extern pros::adi::Led led2;
@@ -47,7 +46,9 @@ extern pros::adi::Led led2;
 extern pros::Rotation vertPod;
 
 extern lemlib::Chassis chassis;
+extern lemlib::Chassis pose_chassis;
 
+extern pros::Task intakeTask;
 extern pros::Task colorSortTask;
 
 // controller declaration

@@ -1,57 +1,80 @@
 #include "main.h"
 #include "pros/llemu.hpp"
 #include "pros/misc.h"
+#include "pros/rtos.hpp"
 #include "subsystemHeaders/global.hpp"
 
 int intakeState = 0;
 
-//bool intakePistonStatus = true;
-bool lowerScoringToggled = false;
-int lowerScoringTimer = 0;
-void setIntakePiston(){
-    /*if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_L2)){ // was y
-    //if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){ // nelson
-        intakePistonStatus = !intakePistonStatus;
-        scoringModifier.set_value(intakePistonStatus);
-    }*/
+bool centerDescoreStatus = false;
+bool hoodPistonStatus = true;
+bool middleGoalMacroTriggered = false;
+
+void middleGoalMacro(){
+    if(middleGoalMacroTriggered == false && intake_optical.get_proximity() > 150){ // check intake fullness
+        lowerIntake.move(-100);
+        upperIntake.move(-100);
+        middleGoalMacroTriggered = true;
+        pros::Task::delay(300);
+    }
+    lowerIntake.move(100);
+    upperIntake.move(-80);
+}
+
+void holdIntakeSetting(){
+    lowerIntake.move(120);
+    if(intake_optical.get_proximity() > 150){
+        upperIntake.move(0);
+    }else{
+        upperIntake.move(120);
+    }
 }
 
 void setIntake(){
-    // R1: run first and second q 
+    // R1: hold (close hood)
     if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
-        lowerIntake.move(120);
-        upperIntake.move(-40);
-        //upperIntake.brake();
-    // R2: run ALL forward
+        //lowerIntake.move(120);
+        //upperIntake.move(120);
+        holdIntakeSetting();
+        if(hoodPistonStatus==false){
+            hoodPiston.set_value(true);
+            hoodPistonStatus = true;
+        }
+    // R2: score (open hood);
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)){
         lowerIntake.move(120);
-        upperIntake.move(127);
-    // L1: run ALL backward
-    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)/*||controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)*/){
-        lowerIntake.move(-127);
-        upperIntake.move(-127);
-    // L2: weak lower goal
-    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
-        lowerIntake.move(-80);
-        upperIntake.move(-80);
-        if(lowerScoringToggled==false){
-            lowerIntakeModifier.set_value(true);
-            lowerScoringToggled = true;
+        upperIntake.move(120);
+        if(hoodPistonStatus==true){
+            hoodPiston.set_value(false);
+            hoodPistonStatus = false;
         }
+    // L1: middle goal
+    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)){
+        middleGoalMacro();
+    // L2: outtake (all backward)
+    }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
+        lowerIntake.move(-100);
+        upperIntake.move(-40);
     }else{
         lowerIntake.brake();
         upperIntake.brake();
         
-        if(lowerScoringToggled){
-            lowerScoringTimer += 15;
-            if(lowerScoringTimer >= 500){
-                lowerIntakeModifier.set_value(false);
-                lowerScoringToggled = false;
-                lowerScoringTimer = 0;
-            }
+        middleGoalMacroTriggered = false; // reset macro trigger
+    }
+
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+        hoodPistonStatus = !hoodPistonStatus;
+        hoodPiston.set_value(hoodPistonStatus);
+    }
+    if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        centerDescoreStatus = !centerDescoreStatus;
+        centerDescore.set_value(centerDescoreStatus);
+
+        if(loaderState == true){
+            loaderPiston.set_value(false);
+            loaderState=false;
         }
     }
-    setIntakePiston();
 }
 
 void toggleIntake(bool status, double state, int volt){
@@ -72,7 +95,6 @@ void toggleIntake(bool status, double state, int volt){
     }
     
     intakeState = state; //
-    //intakeState = status;
 }
 
 void toggleIntake(bool status, double state){
@@ -96,13 +118,6 @@ void toggleIntake(bool status, double state){
     //intakeState = status;
 }
 
-void setScoreHeight(bool intakePosition){
-    scoringModifier.set_value(intakePosition); 
-}
-
-void toggleLowerGoalPiston(bool status){
-    lowerIntakeModifier.set_value(status);
-}
 
 // should remeasure these vals:
 
