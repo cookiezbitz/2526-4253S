@@ -47,7 +47,7 @@ pros::Rotation vertPod(-14); // vert tracking
 //pros::adi::Led led('H',17);
 //pros::adi::Led led2('B',17); // WIRE
 
-lemlib::TrackingWheel verticalEncoder(&vertPod, 2.0,+(13.75/2 - 5.0 -11.0/12)); // to the right
+lemlib::TrackingWheel verticalEncoder(&vertPod, 2.0,+(13.75/2 - 5.5 -11.0/12)); // to the right
 
 lemlib::OdomSensors sensors(&verticalEncoder,nullptr,nullptr,nullptr, &inertial);
 

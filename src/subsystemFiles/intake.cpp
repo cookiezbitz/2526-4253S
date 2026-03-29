@@ -102,12 +102,20 @@ void toggleIntake(bool status, double state){
         if(state==1){
             lowerIntake.move(120);
             upperIntake.move(127);
+            hoodPiston.set_value(false);
         }else if(state==-1){
             lowerIntake.move(-127);
             upperIntake.move(-127);
+        }else if(state ==2){
+            lowerIntake.move(-100);
+            upperIntake.move(-100);
+            pros::delay(200);
+            lowerIntake.move(120);
+            upperIntake.move(-90);
         }else{
             lowerIntake.move(120);
-            upperIntake.move(-55); // -40 before
+            upperIntake.move(55); // -40 before
+            hoodPiston.set_value(true);
         }
     }else{
         lowerIntake.brake();
