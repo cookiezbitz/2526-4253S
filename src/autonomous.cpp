@@ -625,17 +625,17 @@ void left_LongCenter(){
 
     chassis.waitUntil(10);
 
-    //setScoreHeight(false);
     pros::delay(1000); 
     
-    chassis.moveToPoint(13,-12,500,{.minSpeed=30});
+    /*chassis.moveToPoint(13,-12,500,{.minSpeed=30});
     toggleLoader(false);
     toggleIntake(true,-1);
     chassis.waitUntil(1);
     chassis.cancelMotion();
-    //chassis.waitUntilDone();
-    //setScoreHeight(true);
     chassis.moveToPoint(9+1,-8,500,{.forwards=false,.minSpeed=40});
+    toggleIntake(false,0);*/
+
+    toggleLoader(false);
     toggleIntake(false,0);
     
 
@@ -770,11 +770,11 @@ void autonomous() {
     //antiJam.remove();
 
     //right_Long7(); //done
-    right_LowerLong(); //done
+    //right_LowerLong(); //done
     //right_LongLower();
     
     //left_CenterLong();
-    //left_LongCenter(); //done
+    left_LongCenter(); //done
     //left_Long9();
     //left_Long7(); //done
     //test();  

@@ -9,16 +9,21 @@ int intakeState = 0;
 bool centerDescoreStatus = false;
 bool hoodPistonStatus = true;
 bool middleGoalMacroTriggered = false;
-
+bool skills = true;
 void middleGoalMacro(){
     if(middleGoalMacroTriggered == false && intake_optical.get_proximity() > 150){ // check intake fullness
         lowerIntake.move(-100);
         upperIntake.move(-100);
         middleGoalMacroTriggered = true;
-        pros::Task::delay(300);
+        pros::Task::delay(200);
     }
     lowerIntake.move(100);
-    upperIntake.move(-80);
+    if( skills){
+        upperIntake.move(-20);
+    }
+    else{
+        upperIntake.move(-50);
+    }
 }
 
 void holdIntakeSetting(){
@@ -53,7 +58,11 @@ void setIntake(){
         middleGoalMacro();
     // L2: outtake (all backward)
     }else if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)){
-        lowerIntake.move(-100);
+        if(skills){
+            lowerIntake.move(-55);
+        }else{
+            lowerIntake.move(-100);
+        }
         upperIntake.move(-40);
     }else{
         lowerIntake.brake();
