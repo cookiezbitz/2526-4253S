@@ -37,7 +37,7 @@ pros::Imu inertial(18);
 // pros radio port: 11, 5
 
 pros::Distance right_distanceSensor(20); 
-pros::Distance back_distanceSensor(4); 
+pros::Distance left_distanceSensor(4); 
 pros::Distance front_distanceSensor(13);
 pros::Optical intake_optical(15);
 

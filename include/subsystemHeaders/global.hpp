@@ -36,7 +36,7 @@ extern pros::adi::DigitalOut hoodPiston;
 extern pros::Imu inertial;
 
 extern pros::Distance right_distanceSensor;
-extern pros::Distance back_distanceSensor;
+extern pros::Distance left_distanceSensor;
 extern pros::Distance front_distanceSensor;
 extern pros::Optical intake_optical;
 

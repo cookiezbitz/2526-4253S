@@ -16,3 +16,5 @@ void setScoreHeight(bool intakePosition);
 void toggleLowerGoalPiston(bool status);
 
 void setIntakeState(int state);
+
+void toggleStick(bool state);

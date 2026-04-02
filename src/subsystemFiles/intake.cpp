@@ -146,3 +146,8 @@ void toggleIntake(bool status, double state){
 void setIntakeState(int state){
     intakeState = state;
 }
+
+void toggleStick(bool state){
+    centerDescore.set_value(state);
+    centerDescoreStatus = state;
+}
