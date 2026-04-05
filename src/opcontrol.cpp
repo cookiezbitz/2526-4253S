@@ -75,6 +75,29 @@ void intake(){
 	}
 }
 
+void swap_endian(uint8_t* data, size_t size) {
+    for (size_t i = 0; i < size - 1; i += 2) {
+        uint8_t tmp = data[i];
+        data[i] = data[i + 1];
+        data[i + 1] = tmp;
+    }
+}
+
+void swap_rgb(uint8_t* data, size_t size) {
+    for (size_t i = 0; i < size - 1; i += 2) {
+        uint16_t pixel = data[i] | (data[i+1] << 8);
+        uint16_t r = (pixel >> 11) & 0x1F;
+        uint16_t g = (pixel >> 5) & 0x3F;
+        uint16_t b = pixel & 0x1F;
+        uint16_t swapped = (b << 11) | (g << 5) | r;
+        data[i] = swapped & 0xFF;
+        data[i+1] = (swapped >> 8) & 0xFF;
+    }
+}
+
+extern "C" { extern lv_img_dsc_t smallstella; }
+
+
 void opcontrol() {
 	//pros::Task driverColorSortTask(driverColorSort, "Driver Color Sort");
 	//chassis.setPose(38.5+8,(4+13.625/2.0),270);
@@ -82,7 +105,29 @@ void opcontrol() {
 	//intakePistonRumble.resume();
 	//chassis.setPose(38.5+8,-(4+13.625/2.0),270);
 	pros::Task intakeTask(intake, "Intake Task");
+
+	/*pros::lcd::clear();
+
+	lv_obj_t* rect = lv_obj_create(lv_scr_act());
+    lv_obj_set_size(rect, 600, 400);
+    lv_obj_align(rect, LV_ALIGN_CENTER, 0, 0);
+    lv_obj_set_style_bg_color(rect, lv_color_hex(0x04090a), 0);*/
+
+	
+	// Declare the image
+	//LV_IMG_DECLARE(smallstella);
+	//swap_endian((uint8_t*)smallstella.data, smallstella.data_size);
+	//swap_rgb((uint8_t*)smallstella.data, smallstella.data_size);
+	
+	/*
+	lv_obj_t* image = lv_img_create(lv_scr_act());
+	lv_img_set_src(image, &smallstella);
+	//lv_obj_set_size(image, 480, 272);
+	lv_obj_align(image, LV_ALIGN_CENTER, 0, 0);*/
+	
+    
 	while (true) {
+		//lv_timer_handler();
 
 		//controller.print(0, 0, "R: %.2f", right_distanceSensor.get_distance()/25.4); // mm to inches
 		//controller.print(0, 0, "B: %.2f", back_distanceSensor.get_distance()/25.4); // mm to inches

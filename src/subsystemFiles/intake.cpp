@@ -9,7 +9,7 @@ int intakeState = 0;
 bool centerDescoreStatus = false;
 bool hoodPistonStatus = true;
 bool middleGoalMacroTriggered = false;
-bool skills = true;
+bool skills = false;
 void middleGoalMacro(){
     if(middleGoalMacroTriggered == false && intake_optical.get_proximity() > 150){ // check intake fullness
         lowerIntake.move(-100);

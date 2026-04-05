@@ -3,6 +3,7 @@
 #include "pros/motors.h"
 #include "subsystemHeaders/global.hpp"
 
+
 void on_center_button() {
 	static bool pressed = false;
 	pressed = !pressed;
@@ -13,6 +14,7 @@ void on_center_button() {
 	}
 }
 
+//extern "C" { extern lv_img_dsc_t stella; }
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -20,8 +22,8 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::register_btn1_cb(on_center_button);
+	//pros::lcd::initialize();
+	//pros::lcd::register_btn1_cb(on_center_button);
 	//pros::lcd::set_text(0, "Initializing...");
 
 	driveLeft.set_brake_mode_all(pros::E_MOTOR_BRAKE_COAST);
@@ -57,10 +59,11 @@ void initialize() {
 	xPod.set_data_rate(15);
 	xPod.set_reversed(true);*/
 
-	pros::lcd::set_text(0, "4253S bot is READY! :D");
+	//pros::lcd::set_text(0, "4253S bot is READY! :D");
 	
 	//lemlib::Pose pose = chassis.getPose();
     
+	
 
 	/*pros::Task screen_task([&]() {
         while (true) {
