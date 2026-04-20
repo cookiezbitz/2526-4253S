@@ -56,3 +56,7 @@ void setDrive(){ // use controller input
 void toggleWing(bool state){
     wingPiston.set_value(state);
 }
+
+void toggleHood(bool state){
+    hoodPiston.set_value(state);
+}

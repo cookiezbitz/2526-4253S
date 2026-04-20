@@ -19,10 +19,10 @@ void middleGoalMacro(){
     }
     lowerIntake.move(100);
     if( skills){
-        upperIntake.move(-20);
+        upperIntake.move(-50);
     }
     else{
-        upperIntake.move(-50);
+        upperIntake.move(-90);
     }
 }
 

@@ -5,6 +5,7 @@
 #include "pros/screen.hpp"
 #include <cmath>
 #include <iostream>
+#include <numbers>
 
 
 //ASSET(testblueright_txt);
@@ -122,6 +123,11 @@ double readLeft_coordinate(double readingPosition){
 
 void wait(double ms){
    pros::delay(ms);
+}
+
+void setPoseAs(double x, double y, double theta){
+   chassis.setPose(x,y,theta);
+   pose_chassis.setPose(x,y,theta);
 }
 
 
@@ -245,17 +251,20 @@ void right_AWP(){
     // section 1 (initial goal)
 
     //chassis.moveToPoint(47.5,47,1000,{.earlyExitRange=0});
-    forward(47-16.427,1,1000,0,127,0,true);
+    forward(/*47-16.427*/30,1,1000,0,127,0,true);
     toggleIntake(true,0);
     toggleWing(true);
+    toggleLoader(true);
 
     chassis.turnToHeading(90,1000,{.minSpeed=10,.earlyExitRange=0});
-    toggleLoader(true);
+    
 
 
     // into loader
-    chassis.moveToPoint(59,47,1000,{.maxSpeed=60,.minSpeed=40},true);
-    wait(1000);
+    //chassis.moveToPoint(60+2,47,900,{.maxSpeed=60,.minSpeed=40},true);
+    chassis.waitUntilDone();
+    forward(12,1,900,40,60,0,true);
+    wait(900);
 
 
     // long goal score
@@ -276,12 +285,12 @@ void right_AWP(){
 
     chassis.moveToPoint(38,47,1000,{.minSpeed=40,.earlyExitRange=2},true);
 
+    chassis.waitUntil(3);
+    toggleIntake(true,0);
 
     chassis.turnToHeading(225,1000,{.minSpeed=40,.earlyExitRange=10});
 
-
     chassis.moveToPoint(22,22,1500,{.maxSpeed=100,.minSpeed=30,.earlyExitRange=1},true);
-    toggleIntake(true,0);
 
 
     chassis.waitUntil(27);
@@ -295,17 +304,17 @@ void right_AWP(){
 
 
     //chassis.moveToPoint(22,-24,2000,{.maxSpeed=40,.minSpeed=10,.earlyExitRange=1},true);
-    chassis.moveToPoint(22,-24,2000,{.minSpeed=40,.earlyExitRange=1},true);
+    chassis.moveToPoint(22,-24,2000,{.minSpeed=30,.earlyExitRange=1},true);
 
 
-    chassis.waitUntil(5);
+    chassis.waitUntil(2);
     toggleLoader(true);
 
 
     // long goal 2 (pasted from left victor)
 
 
-    chassis.moveToPoint(40,-46,2000,{.minSpeed=40,.earlyExitRange=0},true);
+    chassis.moveToPoint(40,-46,2000,{.minSpeed=40,.earlyExitRange=1},true);
     
     chassis.turnToHeading(90,1000,{.minSpeed=10,.earlyExitRange=5},false);
     //chassis.setPose(chassis.getPose().x, -readRight_coordinate(70.2), chassis.getPose().theta); // reset y coord using right distance sensor
@@ -313,27 +322,28 @@ void right_AWP(){
     chassis.waitUntilDone();
     //pose_chassis.moveToPose(27.5,-47.5,90,1200,{.forwards=false,.maxSpeed=80,.minSpeed=40,.earlyExitRange=1},true);
     //pose_chassis.waitUntil(5);
-    chassis.moveToPoint(29.5-2,-47,1200,{.forwards=false,.maxSpeed=80,.minSpeed=40,.earlyExitRange=1},true);
+    chassis.moveToPoint(29.5-2,-46,1200,{.forwards=false,.minSpeed=40},true);
     chassis.waitUntil(4);
     toggleIntake(true,1); // score
 
 
     wait(500+200);
-    chassis.setPose(29.5,-48,chassis.getPose().theta); //
+    //chassis.setPose(29.5,-48,chassis.getPose().theta); //
 
-    //chassis.setPose(chassis.getPose().x, -readRight_coordinate(70.2), chassis.getPose().theta); // reset y coord using right distance sensor
+    chassis.setPose(28.5, -readRight_coordinate(70.5)*sin(chassis.getPose().theta*std::numbers::pi/180.0), chassis.getPose().theta); // reset y coord using right distance sensor
     wait(500);
-
 
     // into loader
-    chassis.moveToPoint(47,-47.4,1000,{.minSpeed=40,.earlyExitRange=0},true);
-    chassis.moveToPoint(59,-47,500,{.maxSpeed=60,.minSpeed=40},true);
+    chassis.moveToPoint(47,-47+1,1000,{.minSpeed=40,.earlyExitRange=0},true);
+    chassis.waitUntil(3);
     toggleIntake(true,0);
-    
-    chassis.moveToPoint(59,-47,500,{.maxSpeed=30,.minSpeed=20},true);
-    wait(500);
+    chassis.moveToPoint(60,-46,900,{.maxSpeed=80,.minSpeed=40},true);
 
-    forward(10,-1,1000,60,127,5,true);
+    
+    //chassis.moveToPoint(59,-47,500,{.maxSpeed=30,.minSpeed=20},true);
+    wait(900);
+
+    //forward(10,-1,1000,60,127,5,true);
 
     // go center
     chassis.moveToPoint(10,-10,3000,{.forwards=false,.maxSpeed=127,.minSpeed=10},true);
@@ -341,12 +351,13 @@ void right_AWP(){
     chassis.cancelMotion();
 
 
-    chassis.moveToPoint(10,-10,1000,{.forwards=false,.maxSpeed=50,.minSpeed=10},true);
+    forward(15,-1,2000,20,50,0,true);
+    //chassis.moveToPoint(10-1.5,-10-1.5,1000,{.forwards=false,.maxSpeed=50,.minSpeed=10},true);
     chassis.waitUntil(9-4); // 10 --> 9
 
 
     toggleIntake(true,2);
-    //wait(200);
+    wait(200);
 
 
     upperIntake.move(-30);
@@ -422,20 +433,20 @@ void right_LowerLong(){
 
 
    chassis.moveToPoint(22,22,1500,{.minSpeed=20,.earlyExitRange=15},true);
-   chassis.moveToPoint(22,22,1300,{.maxSpeed=25,.minSpeed=10},true);
+   chassis.moveToPoint(22-2,22,1300,{.maxSpeed=40,.minSpeed=10},true);
    toggleIntake(true,0);
    toggleLoader(true);
 
 
 
 
-   chassis.turnToHeading(225,1000,{.earlyExitRange=1},false);
+   chassis.turnToHeading(225,1000,{.earlyExitRange=5},false);
 
 
    // lower goal
-   chassis.moveToPoint(10,10,1500,{.maxSpeed=60},true);
+   chassis.moveToPoint(10-1,10,1500,{.maxSpeed=60},true);
    toggleLoader(false);
-   chassis.waitUntil(8);
+   chassis.waitUntil(8-1);
    toggleIntake(true,-1);
 
 
@@ -450,18 +461,18 @@ void right_LowerLong(){
    // 2nd segment
 
 
-   chassis.moveToPoint(48,46,2000,{.forwards=false,.earlyExitRange=1},true); // accurate?
+   chassis.moveToPoint(48,46,1500,{.forwards=false,.minSpeed=10,.earlyExitRange=1},true); 
    chassis.waitUntil(10);
    toggleIntake(true,0);
   
-   chassis.turnToHeading(90,1000,{.earlyExitRange=0},true);
+   chassis.turnToHeading(90,900,{.minSpeed=10,.earlyExitRange=5},true);
    toggleLoader(true);
  
    // then, match load
 
 
-   chassis.moveToPoint(59,46.5,800,{.maxSpeed=50,.minSpeed=30},true);
-   wait(800);
+   chassis.moveToPoint(59,46.5,1000,{.maxSpeed=60,.minSpeed=30},true);
+   wait(1000);
 
 
    // score again
@@ -491,12 +502,12 @@ void right_LowerLong(){
    forward(10,1,1500,30);
    toggleIntake(false,0);
    chassis.waitUntilDone();
-   chassis.turnToHeading(210,1000);
+   chassis.turnToHeading(210,1000,{.minSpeed=20,.earlyExitRange=15});
    chassis.waitUntilDone();
    pose_chassis.moveToPose(16,38+1,270+5,3000,{.lead=0.8,.minSpeed=60},true);
    pose_chassis.waitUntilDone();
    wait(500);
-   chassis.turnToHeading(235+10,2000,{.minSpeed=50,.earlyExitRange=5},false);
+   chassis.turnToHeading(235,2000,{.minSpeed=50,.earlyExitRange=5},false);
 }
 
 
@@ -508,7 +519,7 @@ void right_LongLower(){
    // section 1 (initial goal)
 
 
-   chassis.moveToPoint(47.5,47.5+0.3,1000,{.earlyExitRange=0.3});
+   chassis.moveToPoint(47.5,47,1000,{.earlyExitRange=0.3});
    toggleIntake(true,0);
 
 
@@ -547,11 +558,11 @@ void right_LongLower(){
 
 
    // lower goal
-   chassis.moveToPoint(10,10-2,1500,{.maxSpeed=60},true);
+   chassis.moveToPoint(10-1,10-2,1500,{.maxSpeed=60},true);
    toggleLoader(false);
    chassis.waitUntil(8);
    toggleIntake(true,-1);
-   wait(1000);
+   wait(1500);
 
 
 
@@ -570,6 +581,136 @@ void right_LongLower(){
    chassis.turnToHeading(235,1000,{.minSpeed=50,.earlyExitRange=5},false);
 }
 
+void right_LongLower_alt(){
+   setPoseAs(47.5,16.427,0);
+
+   // section 1 (initial goal)
+
+   chassis.moveToPoint(47.5,47,1000,{.earlyExitRange=0.3});
+   toggleIntake(true,0);
+   toggleLoader(true);
+
+   chassis.turnToHeading(90,700,{.earlyExitRange=1});
+
+
+   // into loader
+   //chassis.moveToPoint(60,47,900,{.maxSpeed=60,.minSpeed=30},true);
+   chassis.waitUntilDone();
+   forward(12,1,900,40,60,0,true);
+   wait(900);
+
+
+   // long goal score
+   chassis.moveToPoint(29.5-2,48,1700,{.forwards=false,.maxSpeed=120,.minSpeed=30},true);
+   chassis.waitUntil(24);
+   toggleIntake(true,1);
+   toggleLoader(false);
+
+
+   wait(700); // cut extra time
+   setPoseAs(29,48,chassis.getPose().theta); // fake reset
+   wait(300);
+
+
+   // section 2 (center)
+
+
+   chassis.moveToPoint(47,47,1000,{.minSpeed=40,.earlyExitRange=5},true);
+   chassis.waitUntil(3);
+   toggleIntake(true,-1);
+   chassis.waitUntil(6);
+   toggleIntake(true,0);
+
+
+   chassis.turnToHeading(235,1000,{.minSpeed=30,.earlyExitRange=10});
+   chassis.moveToPoint(22,22,1500,{.minSpeed=20,.earlyExitRange=15-3},true);
+
+   chassis.moveToPoint(19,19,1300,{.maxSpeed=30,.minSpeed=10,.earlyExitRange=4},true);
+   //toggleIntake(true,0);
+   toggleLoader(true);
+   //wait(300);
+   chassis.waitUntilDone();
+
+   forward(4,1,1000,30,80,1,true);
+
+   //controller.print(0,0,"x: %2f y: %2f", chassis.getPose().x, chassis.getPose().y);
+
+   // lower goal
+   //chassis.moveToPoint(10,10,1000,{.maxSpeed=40,.earlyExitRange=14},true);
+   toggleWing(true);
+   chassis.waitUntilDone();
+   toggleLoader(false);
+   //wait(300);
+   
+   
+   chassis.moveToPoint(10-1,10-2,1500,{.maxSpeed=45},true);
+   chassis.waitUntil(2);
+   toggleIntake(true,-1);
+   
+   //chassis.waitUntil(8-4);
+   
+   wait(500);
+   lowerIntake.move(-80);
+   wait(500);
+
+
+
+
+   // section 3 (descore)
+
+   /*chassis.waitUntilDone();
+   pose_chassis.moveToPose(30,34.5+1,270,2000,{.forwards=false,.lead=0.5,.minSpeed=30},true);
+   pose_chassis.waitUntil(10);
+   toggleIntake(false,0);
+   pose_chassis.waitUntilDone();
+   toggleWing(false);
+
+   chassis.moveToPoint(12,36.5,1200,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=1}); //
+   chassis.turnToHeading(235,1000,{.minSpeed=50,.earlyExitRange=5},false);*/
+
+
+   // try move to point again
+   chassis.moveToPoint(29,35.5,1000,{.forwards=false,.maxSpeed=80,.minSpeed=10},true);
+   toggleWing(true); // up
+   chassis.waitUntil(10);
+   toggleIntake(false,0);
+   chassis.turnToHeading(270,1000,{.minSpeed=15,.earlyExitRange=5},false);
+   chassis.waitUntilDone();
+   toggleWing(false);
+
+   /*
+   pose_chassis.moveToPose(6,38,235,2000,{.lead=0.3,.minSpeed=50});
+   pose_chassis.waitUntilDone();*/
+
+   chassis.moveToPoint(8,36,3000,{.minSpeed=40},true);
+   //chassis.waitUntilDone();
+
+   chassis.turnToHeading(250,1000,{.minSpeed=50,.earlyExitRange=5},false);
+   chassis.waitUntilDone();
+   wait(500);
+   /*
+chassis.moveToPoint(28,-35.5,2000,{.minSpeed=30,.earlyExitRange=1},true);
+   toggleStick(false);
+   toggleWing(true);
+   chassis.turnToHeading(90,1500,{.minSpeed=20,.earlyExitRange=20},true);
+   toggleIntake(false,0);
+   chassis.waitUntilDone();
+
+   toggleWing(false);
+  
+   chassis.moveToPoint(12,-37,2000,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=1}); // max speed editable
+   chassis.turnToHeading(110,1000,{.minSpeed=30,.earlyExitRange=2},true);
+   toggleIntake(false,0);
+
+
+
+   chassis.moveToPoint(12-6,38,1200,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=1}); //
+   //chassis.turnToHeading(235,1000,{.minSpeed=50,.earlyExitRange=5},false);
+   chassis.swingToHeading(235,lemlib::DriveSide::LEFT,1500,{.minSpeed=30,.earlyExitRange=5},false);
+   chassis.waitUntilDone();*/
+   
+   //pose_chassis.moveToPose(12,35.5+2.5,235,1500,{.lead=0.2,.minSpeed=50});
+}
 
 void right_Long7(){
    //chassis.setPose(62,16.427,270);
@@ -634,16 +775,16 @@ void right_Long9(){
 
 
    chassis.moveToPoint(22,22,1500,{.minSpeed=20,.earlyExitRange=15},true);
-   chassis.moveToPoint(22,22,1300,{.maxSpeed=30,.minSpeed=30},true);
+   chassis.moveToPoint(22,22,1300,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=1.5},true);
    toggleIntake(true,0);
-   chassis.waitUntil(12);
+   chassis.waitUntil(10);
    toggleLoader(true);
 
 
    chassis.moveToPoint(10,32,1000,{.maxSpeed=80});
    chassis.waitUntil(10);
    toggleLoader(false);
-   chassis.turnToHeading(165,500,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=2},true);
+   chassis.turnToHeading(345,500,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=2},true);
   
    chassis.moveToPoint(8,40,800,{.maxSpeed=80,.minSpeed=25},false);
   
@@ -660,47 +801,55 @@ void right_Long9(){
 
    // 2nd segment
   
-   chassis.turnToHeading(90,1500,{},true);
+   chassis.turnToHeading(90,1500,{.maxSpeed=80,.earlyExitRange=1},true);
 
 
    // then, match load
    toggleLoader(true);
-
-
-   chassis.waitUntilDone();
-   chassis.setPose(48,readLeft_coordinate(70.75),chassis.getPose().theta);
-
-
-   chassis.moveToPoint(60,46.5,900,{.maxSpeed=50,.minSpeed=40},true);
-
-
    toggleIntake(true, 0);
 
+   chassis.waitUntilDone();
+   chassis.setPose(chassis.getPose().x,readLeft_coordinate(70.75)*sin(chassis.getPose().theta*std::numbers::pi/180.0),chassis.getPose().theta);
+
+   chassis.moveToPoint(60,46.5,1000,{.maxSpeed=60,.minSpeed=40},true);
+   wait(1000);
 
    // score again
-   chassis.moveToPoint(29.5-2,-47.5,1500,{.forwards=false,.earlyExitRange=1},true);
+   chassis.moveToPoint(29.5-2,47.5,1500,{.forwards=false,.earlyExitRange=1},true);
    chassis.waitUntil(20);
    toggleIntake(true,1); // score
    toggleLoader(false); 
 
 
    wait(1100); // wait
-   chassis.setPose(29.5,-48,chassis.getPose().theta);
+   //chassis.setPose(28.5,48,chassis.getPose().theta);
+   chassis.setPose(28.5,readLeft_coordinate(70.75)*sin(chassis.getPose().theta*std::numbers::pi/180.0),chassis.getPose().theta);
    wait(900);
 
 
-   // use wing, OR hood
-   // toggleHood(true);
-   // 10.5 displaced
-   forward(10,1,1500,30);
+   // hood
+   /*
+   forward(4,1,500,30,120,0,true);
+   toggleHood(false);
+   forward(6,-1,1000,50,120,0,true);
+   toggleHood(true);
+   
+   //*/
+   toggleHood(true);
    toggleIntake(false,0);
-   chassis.waitUntilDone();
+
+   // 10.5 displaced
+   // wing
+   /*forward(10,1,1500,30);
+   toggleIntake(false,0);
    chassis.turnToHeading(210,1000);
    chassis.waitUntilDone();
-   pose_chassis.moveToPose(16,38+1,270+5,3000,{.lead=0.8,.minSpeed=60},true);
+   pose_chassis.moveToPose(16,38,270+5,3000,{.lead=0.8,.minSpeed=60},true);
    pose_chassis.waitUntilDone();
-   wait(500);
-   chassis.turnToHeading(235+15,2000,{.minSpeed=50,.earlyExitRange=5},false);
+   chassis.moveToPoint(12-2,39,2000,{.maxSpeed=80,.minSpeed=10},true);*/
+   
+   //wait(500);
+   //chassis.turnToHeading(235+15,2000,{.minSpeed=50,.earlyExitRange=5},false);
 }
 
 
@@ -725,16 +874,11 @@ void left_CenterLong(){
    pose_chassis.waitUntil(16);
    //chassis.waitUntil(9); // 10 --> 9
    toggleIntake(true,2);
+   wait(200);
+   upperIntake.move(-40);
 
+   wait(1500-200);
 
-   //chassis.waitUntil(10);
-   wait(1500);
-
-
-   /*chassis.moveToPoint(12,-12,500,{.minSpeed=30});
-   chassis.waitUntil(3);
-   setScoreHeight(true);
-   chassis.moveToPoint(8,-8,500,{.forwards=false,.minSpeed=40});*/
 
 
    pose_chassis.waitUntilDone();
@@ -783,7 +927,6 @@ void left_CenterLong(){
    //chassis.turnToHeading(110,1000,{.minSpeed=50},false);
 }
 
-
 // victor
 void left_LongCenter(){
    chassis.setPose((48-2.25),-(15.75),270);
@@ -814,7 +957,8 @@ void left_LongCenter(){
 
 
    wait(700);
-   chassis.setPose(29.5,-48,chassis.getPose().theta); // fake reset
+   chassis.setPose(29.5,-48,chassis.getPose().theta); 
+   pose_chassis.setPose(29.5,-48,chassis.getPose().theta); 
    wait(300);
 
 
@@ -861,12 +1005,115 @@ void left_LongCenter(){
    toggleIntake(false,0);
    chassis.moveToPoint(10,-10,800,{.forwards=false,.minSpeed=40,.earlyExitRange=2});
 
+   toggleWing(false);
 
    // use wing
-   chassis.moveToPoint(30,-37,2000,{.minSpeed=30},true);
+   //chassis.moveToPoint(30,-37,2000,{.minSpeed=30},true);
+   chassis.moveToPoint(30-2,-37+1.5,2000,{.minSpeed=30,.earlyExitRange=1},true);
    toggleStick(false);
-   chassis.turnToHeading(90,1500,{.minSpeed=30,.earlyExitRange=5},true);
+   chassis.turnToHeading(90,1500,{.minSpeed=50,.earlyExitRange=5},true);
    toggleIntake(false,0);
+   chassis.waitUntilDone();
+
+   //
+   /*pose_chassis.moveToPose(28,-35.5,90,2000,{.minSpeed=30,.earlyExitRange=1},true);
+   toggleStick(false);
+   pose_chassis.waitUntilDone();*/
+   
+   toggleWing(true);
+  
+   chassis.moveToPoint(12,-37,2000,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=1}); // max speed editable
+   chassis.turnToHeading(110,1000,{.minSpeed=30,.earlyExitRange=2},true);
+   toggleIntake(false,0);
+}
+
+void left_LongCenter_alt(){
+   setPoseAs(47.5,-16.427,180);
+
+   // section 1 (initial goal)
+
+   chassis.moveToPoint(47.5,-47,1000,{.earlyExitRange=0.3});
+   toggleIntake(true,0);
+   toggleLoader(true);
+
+   chassis.turnToHeading(90,700,{.earlyExitRange=1});
+
+   // into loader
+   chassis.moveToPoint(60,-47,900,{.maxSpeed=50,.minSpeed=30},true);
+   wait(900);
+
+
+   // long goal score
+   chassis.moveToPoint(29.5-2,-48,1700,{.forwards=false,.maxSpeed=120,.minSpeed=30},true);
+   chassis.waitUntil(24);
+   toggleIntake(true,1);
+   
+
+
+   wait(700); // cut extra time
+   setPoseAs(29,-48,chassis.getPose().theta); // fake reset
+   wait(300);
+
+
+   // section 2 (center)
+
+
+   chassis.moveToPoint(47,-47,1000,{.minSpeed=40,.earlyExitRange=5},true);
+   chassis.waitUntil(3);
+   toggleIntake(true,0);
+   toggleLoader(false);
+   chassis.turnToHeading(315,1000,{.minSpeed=30,.earlyExitRange=10},false);
+
+   chassis.moveToPoint(22,-22,1500,{.minSpeed=20,.earlyExitRange=15},true);
+   chassis.moveToPoint(22,-22,1300,{.maxSpeed=30,.minSpeed=20,.earlyExitRange=2},true);
+   toggleLoader(true);
+
+   /*chassis.turnToHeading(135,1000,{.minSpeed=30,.earlyExitRange=15});
+
+   // go center
+   chassis.moveToPoint(10,-10,3000,{.forwards=false,.maxSpeed=90,.minSpeed=10,.earlyExitRange=12},true);
+
+   chassis.moveToPoint(10,-10,1000,{.forwards=false,.maxSpeed=50,.minSpeed=10},true);
+   chassis.waitUntil(9); // 10 --> 9
+   
+   toggleIntake(true,2);
+
+   wait(900);
+   chassis.waitUntilDone();*/
+
+   chassis.waitUntilDone();
+   pose_chassis.moveToPose(10,-10,135,2000,{.forwards=false,.minSpeed=20},true);
+
+   pose_chassis.waitUntil(14);
+   toggleIntake(true,2);
+   wait(200);
+   upperIntake.move(-40);
+
+   wait(1250);
+
+   /*
+   // poke
+   chassis.moveToPoint(16,-16,1000,{.minSpeed=30});
+   toggleLoader(false);
+   toggleStick(true);
+   toggleIntake(false,0);
+   chassis.moveToPoint(10,-10,800,{.forwards=false,.minSpeed=40,.earlyExitRange=2});
+
+   toggleWing(false);
+   */
+
+
+   // section 3 (descore)
+
+
+   chassis.moveToPoint(28,-35.5,2000,{.minSpeed=30,.earlyExitRange=1},true);
+   toggleStick(false);
+   toggleWing(true);
+   chassis.turnToHeading(90,1500,{.minSpeed=20,.earlyExitRange=20},true);
+   toggleIntake(false,0);
+   chassis.waitUntilDone();
+
+   toggleWing(false);
   
    chassis.moveToPoint(12,-37,2000,{.forwards=false,.maxSpeed=80,.minSpeed=30,.earlyExitRange=1}); // max speed editable
    chassis.turnToHeading(110,1000,{.minSpeed=30,.earlyExitRange=2},true);
@@ -880,16 +1127,16 @@ void left_Long9(){ //
 
 
    chassis.moveToPoint(22,-22,1500,{.minSpeed=20,.earlyExitRange=15},true);
-   chassis.moveToPoint(22,-22,1300,{.maxSpeed=30,.minSpeed=30},true);
+   chassis.moveToPoint(22,-22,1300,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=1.5},true); // ****
    toggleIntake(true,0);
-   chassis.waitUntil(12);
+   chassis.waitUntil(10);
    toggleLoader(true);
 
 
-   chassis.moveToPoint(10,-32,1000,{.maxSpeed=80});
+   chassis.moveToPoint(10,-32,1000,{.maxSpeed=80,.minSpeed=20,.earlyExitRange=1});
    chassis.waitUntil(10);
    toggleLoader(false);
-   chassis.turnToHeading(195,500,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=2},true);
+   chassis.turnToHeading(195,1000,{.maxSpeed=80,.minSpeed=30,.earlyExitRange=5},true);
   
    chassis.moveToPoint(8,-40,800,{.maxSpeed=80,.minSpeed=25},false);
   
@@ -906,8 +1153,8 @@ void left_Long9(){ //
 
    // 2nd segment
   
-   chassis.turnToHeading(90,1500,{},true);
-
+   chassis.turnToHeading(90,1500,{.minSpeed=10,.earlyExitRange=1},true);
+   toggleIntake(true, 0);
 
    // then, match load
    toggleLoader(true);
@@ -917,29 +1164,44 @@ void left_Long9(){ //
    chassis.setPose(48,-readRight_coordinate(70.75),chassis.getPose().theta);
 
 
-   chassis.moveToPoint(60,-46.5,900,{.maxSpeed=50,.minSpeed=40},true);
+   chassis.moveToPoint(59,-46,1000,{.maxSpeed=60,.minSpeed=40},true);
 
-
-   toggleIntake(true, 0);
+   wait(1000);
 
 
    // score again
-   chassis.moveToPoint(29.5-2,-47.5,1500,{.forwards=false,.earlyExitRange=1},true);
+   chassis.moveToPoint(29.5-2-2,-47.5,1500,{.forwards=false,.earlyExitRange=1},true);
    chassis.waitUntil(20);
    toggleIntake(true,1); // score
    toggleLoader(false); 
 
 
    wait(1100); // wait
-   chassis.setPose(29.5,-48,chassis.getPose().theta);
-   wait(400+500);
+   chassis.setPose(28.5,-48,chassis.getPose().theta);
+   wait(900);
 
 
-   // use wing, OR hood
+   // hood
+   
+   forward(4,1,500,30,120,0,true);
+   toggleHood(false);
+   forward(6,-1,1000,50,120,0,true);
+
+
+   toggleHood(true);
+   
+   //*/
+
+   toggleIntake(false,0);
+
    // 10.5 displaced
-   forward(10,1,1500,40);
+   // wing
+   
+   /*forward(10,1,1500,40);
    chassis.waitUntilDone();
    pose_chassis.moveToPose(14,-39,90,2500,{.forwards=false,.lead=0.8,.minSpeed=60},true);
+
+   //*/
 }
 
 
@@ -1128,8 +1390,9 @@ void autonomous() {
 
 
    //right_AWP(); // done
-   //right_DoubleMid(); // <- to write
+      //right_DoubleMid(); // <- to write
 
+   //right_LongLower_alt();
 
    //right_Long7(); // done
    //right_Long9(); // <- TEST
@@ -1138,6 +1401,7 @@ void autonomous() {
   
    //left_CenterLong(); // done (no poke btw)
    //left_LongCenter(); // done
+   //left_LongCenter_alt();
    left_Long9(); // done; <- make TWO vers; 1 wing and 1 no wing (close hood)
    //left_Long7(); // done
    //test(); 
