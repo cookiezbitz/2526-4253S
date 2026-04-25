@@ -26,13 +26,22 @@ void middleGoalMacro(){
     }
 }
 
+int timeSinceHold = 0; 
 void holdIntakeSetting(){
     lowerIntake.move(120);
-    if(intake_optical.get_proximity() > 150){
+    upperIntake.move(120);
+    /*if(intake_optical.get_proximity() > 150){
         upperIntake.move(0);
     }else{
         upperIntake.move(120);
-    }
+    }*/
+
+    /*if(timeSinceHold < 200){
+        lowerIntake.move(0);
+        timeSinceHold+=15;
+    }else{
+        lowerIntake.move(120);
+    }*/
 }
 
 void setIntake(){
@@ -68,6 +77,7 @@ void setIntake(){
         lowerIntake.brake();
         upperIntake.brake();
         
+        timeSinceHold = 0;
         middleGoalMacroTriggered = false; // reset macro trigger
     }
 
@@ -118,7 +128,7 @@ void toggleIntake(bool status, double state){
         }else if(state==2){ // middle goal; manually macro
             lowerIntake.move(-100); 
             upperIntake.move(-100);
-            pros::delay(200);
+            pros::delay(200-100);
             lowerIntake.move(120);
             upperIntake.move(-90);
         }else{
